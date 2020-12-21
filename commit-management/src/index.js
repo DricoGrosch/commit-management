@@ -1,14 +1,15 @@
-const chikidar = require('chokidar')
+const chokidar = require('chokidar')
 const environment = require('../env.json')
-
-const observer = chikidar.watch(environment.repositoriesFolder, {
-    ignored: '*.gitignore',
-    ignoreInitial: true,
-
-})
+const dataProvider = require('dataProvider')
+const observer = chokidar.watch(environment.repositoriesFolder)
 observer
-    .on('addDir', path => {
-        console.log(`Directory ${path} has been added`)
+    .on('addDir', async (path) => {
+        const fileName= path.split('/').pop()
+        await dataProvider.create(fileName)
+        chokidar.watch(path, {
+            ignored: '*.gitignore',
+            ignoreInitial: true,
+        })
     })
     .on('unlinkDir', path => {
         console.log(`Directory ${path} has been removed`)
@@ -19,6 +20,3 @@ observer
     .on('ready', () => {
         console.log('Initial scan complete. Ready for changes')
     })
-    .on('raw', (event, path, details) => { // internal
-        console.log('Raw event info:', event, path, details);
-    });
