@@ -1,23 +1,21 @@
-const axios = require('axios')
-const {username} = require('../env.json')
+const {ACCESS_TOKEN} = require('../env.json')
+const {Octokit} = require("@octokit/core");
+const octokit = new Octokit({auth: ACCESS_TOKEN});
 
-class DataProvider {
 
-    getAll = () => {
-
-    }
-    getOne = async (name) => {
-        const response = await axios.get(`https://api.github.com/repos/${username}/${name}`)
-    }
-    create = async (name) => {
-    }
-    stage = () => {
-
-    }
-    commit = () => {
-
-    }
-
+async function create(name) {
+    let response = await octokit.request('POST /user/repos', {
+        name
+    })
+    return response.data
 }
 
-export default new DataProvider()
+
+async function push() {
+}
+
+
+module.exports = {
+    create,
+    push
+}

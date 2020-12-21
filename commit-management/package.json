@@ -11,8 +11,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@octokit/core": "^3.2.4",
     "axios": "^0.21.0",
     "chokidar": "^3.4.3",
+    "node-watch": "^0.7.1",
     "nodemon": "^2.0.6"
   }
 }
