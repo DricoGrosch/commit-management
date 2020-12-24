@@ -1,5 +1,5 @@
 const {app, BrowserWindow, ipcMain} = require('electron')
-require('./api/eventDispatcher')
+require('./services/eventDispatcher')
 app.on('ready', () => {
     const window = new BrowserWindow({
         width: 500,
@@ -8,6 +8,7 @@ app.on('ready', () => {
             nodeIntegration: true
         }
     })
-    window.loadFile('src/electronPages/index/index.html')
+    window.loadFile('src/uiPages/index/index.html')
+    window.webContents.openDevTools()
 })
 
