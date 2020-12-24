@@ -41,7 +41,6 @@ async function addFile(path) {
 }
 
 async function commit() {
-
 }
 
 module.exports = {

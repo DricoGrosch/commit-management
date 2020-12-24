@@ -1,4 +1,4 @@
-const {ACCESS_TOKEN} = require('../env.json')
+const {ACCESS_TOKEN} = require('../../env.json')
 const {Octokit} = require("@octokit/core");
 const octokit = new Octokit({auth: ACCESS_TOKEN});
 
