@@ -1,46 +1,31 @@
-const dataProvider = require('./dataProvider')
-const chokidar = require('chokidar')
+const {create} = require('../database/dataProvider')
+const watch = require('node-watch');
+const {repositoriesFolder} = require('../../env.json')
 
-async function createRepository(path) {
-
-    const repo = chokidar.watch(path)
-    let responseData = {}
+async function createRepository(name) {
+    const path = `${repositoriesFolder}\\${name}`
+    let repo = {}
     //uncomment the line below to create github repository
-    // responseData = await dataProvider.create(path.replace(/\\/g, '/').split('/').pop())
+    // repo = await api.create(path.replace(/\\/g, '/').split('/').pop())
     repo.path = path;
     repo.unstagedFiles = [];
-    repo.id = responseData.id
-    repo.nodeId = responseData.node_id
-    repo.name = responseData.name
-    repo.owner = responseData.owner
-    repo.url = responseData.url
-    repo.cloneUrl = responseData.clone_url
-    repo.createdAt = responseData.created_at
-    repo.updatedAt = responseData.updated_at
-    repo.pushedAt = responseData.pushed_at
-    repo.commitsUrls = responseData.commits_url
-    repo.gitCommitsUrls = responseData.git_commits_url
-
-    repo.on('addDir', async (path) => {
-        repo.unstagedFiles.push(path)
-    })
-    repo.on('add', async (path) => {
-        repo.unstagedFiles.push(path)
-    })
-    repo.on('change', async (path,stats) => {
-        repo.unstagedFiles.push(path)
-
-    })
-    repo.on('unlink', async (path) => {
-        repo.unstagedFiles = repo.unstagedFiles.filter(p => p !== path)
-    })
+    await create(repo)
+    watch(path, {recursive: true}, async (evt, repoPath) => {
+        evt === "update"
+            ? repo.unstagedFiles = await addFile(repoPath, repo.unstagedFiles)
+            : repo.unstagedFiles = repo.unstagedFiles.filter(p => p !== repoPath)
+    });
     return repo
 }
 
-async function addFile(path) {
+async function addFile(newPath, unstagedFiles) {
+    if (!unstagedFiles.includes(newPath)) {
+        unstagedFiles.push(newPath)
+    }
+    return unstagedFiles
 }
 
-async function commit() {
+async function commit(unstagedFiles) {
 }
 
 module.exports = {

@@ -1,10 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
 </head>
 <body>
-$END$
+<label for="repo-name"></label>
+<input type="text" id="repo-name">
+<button id="new-repo">Create</button>
 </body>
+<script defer>
+    const $ = require('jQuery');
+    const {ipcRenderer} = require('electron')
+
+    $('#new-repo').click(() => {
+        ipcRenderer.send('create-new-repo', $('#repo-name').val())
+    })
+
+</script>
 </html>
