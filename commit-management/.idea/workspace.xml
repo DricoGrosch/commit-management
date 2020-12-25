@@ -1,12 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="9f7e5000-2ee5-45a0-a443-b9e5afa838f3" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/dataProvider.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/globals/globals.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/globals/imports.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/repoCreationModal/repoCreationModal.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/repositoryList/repositoryList.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/toolbar/toolbar.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/api.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/database/localDatabase.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/localDatabase.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/repository.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/repository.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/cronjob.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/cronjob.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/eventDispatcher.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/eventDispatcher.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/uiPages/globals/imports.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/uiPages/globals/imports.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/globals/imports.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/uiPages/index/index.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/uiPages/index/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/uiPages/index/index.js" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,6 +35,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="tsconfig.json" />
+        <option value="HTML File" />
+        <option value="CSS File" />
         <option value="JavaScript File" />
       </list>
     </option>
@@ -32,22 +54,37 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="javascript.nodejs.core.library.configured.version" value="10.16.2" />
-    <property name="javascript.nodejs.core.library.typings.version" value="10.17.49" />
+    <property name="javascript.nodejs.core.library.configured.version" value="11.1.1" />
+    <property name="javascript.nodejs.core.library.typings.version" value="11.15.42" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/GUIComponents" />
+    <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="nodejs_interpreter_path" value="node" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="http.proxy" />
+    <property name="restartRequiresConfirmation" value="false" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\WebStorm 2020.3\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\drico\Desktop\commit-management\commit-management\src\GUIComponents" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\drico\Desktop\commit-management\commit-management\src" />
-      <recent name="C:\Users\drico\Desktop\commit-management\commit-management" />
+      <recent name="C:\Users\drico\Desktop\commit-management\commit-management\src\GUIComponents" />
+      <recent name="C:\Users\drico\Desktop\commit-management\commit-management\src\services" />
+      <recent name="C:\Users\drico\Desktop\commit-management\commit-management\src\electronPages\globals" />
+      <recent name="C:\Users\drico\Desktop\commit-management\commit-management\src\electronPages" />
     </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="commit-management" type="NodeJSConfigurationType" path-to-node="$PROJECT_DIR$/node_modules/.bin/electron.cmd" node-parameters="." working-dir="$PROJECT_DIR$">
+      <method v="2" />
+    </configuration>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -60,7 +97,17 @@
       <workItem from="1608523834234" duration="564000" />
       <workItem from="1608524562683" duration="266000" />
       <workItem from="1608524866027" duration="1566000" />
-      <workItem from="1608526868960" duration="5156000" />
+      <workItem from="1608526868960" duration="5468000" />
+      <workItem from="1608556356033" duration="2996000" />
+      <workItem from="1608579095229" duration="12194000" />
+      <workItem from="1608591546182" duration="3296000" />
+      <workItem from="1608599814268" duration="134000" />
+      <workItem from="1608642896937" duration="8535000" />
+      <workItem from="1608787212827" duration="721000" />
+      <workItem from="1608827628818" duration="15492000" />
+      <workItem from="1608850486444" duration="2481000" />
+      <workItem from="1608875589546" duration="6929000" />
+      <workItem from="1608928484219" duration="8676000" />
     </task>
     <servers />
   </component>

@@ -1,5 +1,6 @@
-const {app, BrowserWindow, ipcMain} = require('electron')
+const {app, BrowserWindow, ipcMain, nativeTheme} = require('electron')
 require('./services/eventDispatcher')
+require('./services/cronjob')
 app.on('ready', () => {
     const window = new BrowserWindow({
         width: 500,
@@ -8,7 +9,9 @@ app.on('ready', () => {
             nodeIntegration: true
         }
     })
-    window.loadFile('src/uiPages/index/index.html')
+    window.loadFile('src/index.html')
+    window.setMenu(null)
+    nativeTheme.themeSource = 'dark'
     window.webContents.openDevTools()
 })
 
