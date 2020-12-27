@@ -9,9 +9,14 @@ async function getOne(path) {
     const repo = await dataProvider.getOne(path)
     return repo
 }
+async function getAll() {
+    const repos = await dataProvider.getAll()
+    return repos
+}
 
 module.exports = {
     create,
-    getOne
+    getOne,
+    getAll
 }
 

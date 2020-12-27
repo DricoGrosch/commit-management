@@ -19,12 +19,18 @@ async function create(repo) {
 }
 
 async function getOne(path) {
-    let database = JSON.parse(fs.readFileSync('localDatabase.json'))
+    let database = JSON.parse(fs.readFileSync('src/database/localDatabase.json'))
     const repo = database.find(repo => repo.path = path)
     return repo
+}
+async function getAll() {
+    let database = JSON.parse(fs.readFileSync('src/database/localDatabase.json'))
+    const repos = database.filter(repo => repo.folderName)
+    return repos
 }
 
 module.exports = {
     create,
-    getOne
+    getOne,
+    getAll
 }

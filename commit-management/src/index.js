@@ -1,7 +1,10 @@
 const {app, BrowserWindow, ipcMain, nativeTheme} = require('electron')
 require('./services/eventDispatcher')
 require('./services/cronjob')
-app.on('ready', () => {
+const {getAll} = require('./database/dataProvider')
+const {getFiles} = require('./services/folderManager')
+
+app.on('ready',async  () => {
     const window = new BrowserWindow({
         width: 500,
         height: 500,
@@ -14,4 +17,5 @@ app.on('ready', () => {
     nativeTheme.themeSource = 'dark'
     window.webContents.openDevTools()
 })
+
 
