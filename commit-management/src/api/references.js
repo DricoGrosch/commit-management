@@ -2,26 +2,31 @@ const {ACCESS_TOKEN} = require('../../env.json')
 const {Octokit} = require("@octokit/core");
 const octokit = new Octokit({auth: ACCESS_TOKEN});
 
-
-
-
-async function getReference(repoName, owner, branchName) {
-    await octokit.request('GET /repos/{owner}/{repo}/git/ref/{ref}', {
-        owner,
+async function listReferences(repoName, owner, branchName = '') {
+    const response = await octokit.request('GET /repos/{owner}/{repo}/git/matching-refs/{ref}', {
+        owner: owner,
         repo: repoName,
-        ref: `refs/heads/${currentBranch}`,
+        ref: `heads/${branchName}`,
     })
+    return response.data
 }
 
-async function updateReferance() {
-
+async function updateReference(repoName, owner, branchName, newCommitSha) {
+        const response = await octokit.request('PATCH /repos/{owner}/{repo}/git/refs/{ref}', {
+            owner,
+            repo: repoName,
+            ref: `heads/${branchName}`,
+            sha: newCommitSha,
+            force: true
+        })
+    return response.data
 }
 
 async function createReference(repoName, owner, branchName, lastCommitSha) {
-    const response = await octokit.request(`POST /repos/${owner.login}/{repoName}/git/refs`, {
+    const response = await octokit.request(`POST /repos/{owner}/{repo}/git/refs`, {
         owner,
         repo: repoName,
-        ref: `refs/heads/${currentBranch}`,
+        ref: `refs/heads/${branchName}`,
         sha: lastCommitSha
     })
     return response.data
@@ -29,8 +34,7 @@ async function createReference(repoName, owner, branchName, lastCommitSha) {
 
 
 module.exports = {
-    getReference,
-    updateReferance,
-    createReference
-
+    updateReference,
+    createReference,
+    listReferences
 }

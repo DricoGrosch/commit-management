@@ -1,8 +1,6 @@
 const {app, BrowserWindow, ipcMain, nativeTheme} = require('electron')
 require('./services/eventDispatcher')
 require('./services/cronjob')
-const {getAll} = require('./database/dataProvider')
-const {getFiles} = require('./services/folderManager')
 
 app.on('ready',async  () => {
     const window = new BrowserWindow({

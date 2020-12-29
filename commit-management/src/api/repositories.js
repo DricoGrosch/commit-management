@@ -8,6 +8,7 @@ async function createRepo(name) {
         name,
         auto_init: true
     })
+    console.log('repository created successfully on origin')
     return response.data
 }
 

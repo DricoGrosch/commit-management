@@ -5,20 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9f7e5000-2ee5-45a0-a443-b9e5afa838f3" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/api/commits.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/references.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/repositories.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/services/folderManager.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/api.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/database/dataProvider.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/dataProvider.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/api.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/commits.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/commits.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/references.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/references.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/repositories.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/repositories.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/database/local.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/local.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/database/localDatabase.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/localDatabase.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/models/repository.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/repository.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/services/cronjob.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/cronjob.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/eventDispatcher.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/eventDispatcher.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/pathManager.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/folderManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/folderManager.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,23 +102,13 @@
       <workItem from="1608928484219" duration="10007000" />
       <workItem from="1609099852283" duration="5500000" />
       <workItem from="1609105475041" duration="1915000" />
-      <workItem from="1609107871817" duration="4634000" />
+      <workItem from="1609107871817" duration="4712000" />
+      <workItem from="1609264813052" duration="12733000" />
+      <workItem from="1609278617042" duration="6638000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/models/repository.js</url>
-          <line>12</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="40" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

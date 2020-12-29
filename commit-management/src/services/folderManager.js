@@ -3,27 +3,14 @@ const fs = require('fs')
 async function transformPath(path) {
     return path.replace(/\\/g, '/')
 }
-
-async function getFiles(folderPath) {
-    let files = []
-    await fs.readdirSync(folderPath, {withFileTypes: true}).map(async (result) => {
-        if (result.isDirectory()) {
-            //SAMERDA N TA ESPERANDO A RECURSÃO
-            const dirFiles = await getFiles(`${await transformPath(folderPath)}/${result.name}`)
-            files = [...files, ...dirFiles]
-        } else {
-            const path =`${await transformPath(folderPath)}/${result.name}`
-            const content=await fs.readFileSync(path,{encoding:'utf-8'})
-            files.push({
-                path,
-                content
-        })
-        }
-    })
-    return files
+async function initializeRepository(path){
+    fs.mkdirSync(path)
+    fs.mkdirSync(`${path}/src`)
+    fs.appendFileSync(`${path}/.gitignore`,'node_modules/')
+    fs.appendFileSync(`${path}/README.md`)
 }
 
 module.exports = {
     transformPath,
-    getFiles
+    initializeRepository
 }
