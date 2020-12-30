@@ -5,19 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9f7e5000-2ee5-45a0-a443-b9e5afa838f3" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/components/commitConfirmation/fileConfirmation.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/api.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/commits.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/commits.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/references.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/references.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/repositories.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/repositories.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/globals/imports.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/globals/globals.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/globals/imports.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/globals/globals.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/database/dataProvider.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/dataProvider.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/database/local.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/local.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/database/localDatabase.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/localDatabase.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.html" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/models/repository.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/repository.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/services/cronjob.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/cronjob.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/folderManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/folderManager.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/eventDispatcher.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/eventDispatcher.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,8 +27,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="tsconfig.json" />
-        <option value="HTML File" />
         <option value="CSS File" />
+        <option value="HTML File" />
         <option value="JavaScript File" />
       </list>
     </option>
@@ -66,17 +65,24 @@
       <recent name="C:\Users\drico\Desktop\commit-management\commit-management\src\GUIComponents" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\drico\Desktop\commit-management\commit-management\src\components\commitConfirmation" />
+      <recent name="C:\Users\drico\Desktop\commit-management\commit-management\src\components\screens" />
       <recent name="C:\Users\drico\Desktop\commit-management\commit-management\src" />
+      <recent name="C:\Users\drico\Desktop\commit-management\commit-management\src\components" />
       <recent name="C:\Users\drico\Desktop\commit-management\commit-management\src\GUIComponents" />
-      <recent name="C:\Users\drico\Desktop\commit-management\commit-management\src\services" />
-      <recent name="C:\Users\drico\Desktop\commit-management\commit-management\src\electronPages\globals" />
-      <recent name="C:\Users\drico\Desktop\commit-management\commit-management\src\electronPages" />
     </key>
   </component>
-  <component name="RunManager">
-    <configuration name="commit-management" type="NodeJSConfigurationType" path-to-node="$PROJECT_DIR$/node_modules/.bin/electron.cmd" node-parameters="." working-dir="$PROJECT_DIR$">
+  <component name="RunManager" selected="Node.js.commit-management">
+    <configuration name="debug render" type="ChromiumRemoteDebugType" factoryName="Chromium Remote" port="9222" restartOnDisconnect="true">
       <method v="2" />
     </configuration>
+    <configuration name="commit-management" type="NodeJSConfigurationType" application-parameters="--remote-debugging-port=9222" path-to-node="$PROJECT_DIR$/node_modules/.bin/electron.cmd" node-parameters="." working-dir="$PROJECT_DIR$">
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Attach to Node.js/Chrome.debug render" />
+      <item itemvalue="Node.js.commit-management" />
+    </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -105,10 +111,30 @@
       <workItem from="1609107871817" duration="4712000" />
       <workItem from="1609264813052" duration="12733000" />
       <workItem from="1609278617042" duration="6638000" />
+      <workItem from="1609296645202" duration="3429000" />
+      <workItem from="1609300127096" duration="12071000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/components/commitConfirmation/fileConfirmation.js</url>
+          <line>16</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/components/commitConfirmation/commitConfirmation.js</url>
+          <line>24</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="14" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

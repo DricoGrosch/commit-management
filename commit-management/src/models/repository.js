@@ -11,7 +11,12 @@ async function createRepository(name) {
     // repo = await repositories.createRepo(name)
     repo.path = path;
     repo.folderName = name;
-    repo.unstagedFiles = [];
+    repo.stagedFiles = {
+        added: [],
+        updated: [],
+        removed: [],
+    };
+    repo.allowAutoCommit = true
     try {
         await dataProvider.create(repo)
         await initializeRepository(repo.path)
@@ -56,11 +61,17 @@ async function getFiles(folderPath, repoName) {
     return files
 }
 
+async function unstageFile(path, repoId) {
+    const repo = dataProvider.getOne(repoId)
+    repo.stagedFiles = repo.stagedFiles.filter(p => p !== path)
+    dataProvider.update(repo)
+}
 
 module.exports = {
     createRepository,
     getGitIgnoreFiles,
     getRelativePath,
-    getFiles
+    getFiles,
+    unstageFile
 
 }
