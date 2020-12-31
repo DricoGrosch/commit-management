@@ -1,6 +1,7 @@
 const dataProvider = require('../database/dataProvider')
 const fs = require('fs')
 const repositories = require('../api/repositories')
+const commits = require('../api/commits')
 const {transformPath, initializeRepository} = require('../services/folderManager')
 const {repositoriesFolder} = require('../../env.json')
 
@@ -67,11 +68,19 @@ async function unstageFile(path, repoId) {
     dataProvider.update(repo)
 }
 
+async function commit(repoId, files) {
+    const repo = await dataProvider.getOne(repoId)
+    //uncomment the line below to create github commit
+    // const commitTree = await commits.createTree(repo.name, repo.owner.login, files)
+    // const commit = await commits.createCommit(repo.name, repo.owner.login, commitTree, 'main')
+}
+
 module.exports = {
     createRepository,
     getGitIgnoreFiles,
     getRelativePath,
     getFiles,
-    unstageFile
+    unstageFile,
+    commit
 
 }

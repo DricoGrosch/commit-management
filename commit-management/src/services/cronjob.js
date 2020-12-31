@@ -1,8 +1,7 @@
 const cron = require('node-cron');
 const {commitInterval} = require('../../env.json')
-const commits = require('../api/commits')
 const {getFiles, getGitIgnoreFiles} = require('../models/repository')
-const {buildContext} = require("./eventDispatcher");
+const {buildContext, atachCloseEvent} = require("./eventDispatcher");
 const {BrowserWindow, nativeTheme} = require('electron')
 const {getAll, update} = require('../database/dataProvider')
 cron.schedule(`*/${commitInterval} * * * *`, async () => {
@@ -27,10 +26,9 @@ cron.schedule(`*/${commitInterval} * * * *`, async () => {
         window.loadFile('src/components/windows/commitConfirmation.html')
         window.setMenu(null)
         nativeTheme.themeSource = 'dark'
-        window.webContents.openDevTools()
+        // window.webContents.openDevTools()
         buildContext(window, {repoId: repo.id, stagedFiles: repo.stagedFiles})
-        // window.on('ready-to-show', () => {
-        // })
+        atachCloseEvent(window)
     });
 
 });

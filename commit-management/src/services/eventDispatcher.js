@@ -1,9 +1,16 @@
-const {ipcMain} = require('electron')
-const {createRepository, unstageFile} = require('../models/repository.js')
+const {ipcMain, BrowserWindow} = require('electron')
+const {createRepository, commit} = require('../models/repository.js')
 
-async function buildContext(window, data){
-    ipcMain.on('build-context', (event, name) => {
-      event.reply('build-context-reply',JSON.stringify(data))
+async function buildContext(window, data) {
+    data.windowId = window.id
+    ipcMain.on('build-context', () => {
+        window.webContents.send('build-context-reply', JSON.stringify(data))
+    })
+}
+
+async function atachCloseEvent(window) {
+    ipcMain.on(`unload-window-${window.id}`, () => {
+        window.close()
     })
 }
 
@@ -14,11 +21,13 @@ ipcMain.on('get-user-repo', (event, name) => {
     event.reply('get-user-repo-reply')
 })
 
-ipcMain.on('unstage-file', async (event, data) => {
-    const {path, repoName} = JSON.parse(data)
-    await unstageFile(path, repoName)
+ipcMain.on('commit', async (event, data) => {
+    const {repoId, stagedFiles, windowId} = JSON.parse(data)
+    await commit(repoId, stagedFiles)
+    BrowserWindow.fromId(windowId).close()
 })
 
 module.exports = {
-    buildContext
+    buildContext,
+    atachCloseEvent
 }

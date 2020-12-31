@@ -22,7 +22,7 @@ async function create(repo) {
 
 async function getOne(id) {
     let database = await readDatabase()
-    const repo = database.find(repo => repo.id = id)
+    const repo = database.find(repo => repo.id === id)
     return repo
 }
 

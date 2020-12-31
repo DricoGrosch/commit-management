@@ -16,13 +16,20 @@ class CommitConfirmation extends HTMLElement {
                 <div style="display: flex;width: 100%"></div>
             </div>
             <div style="display: flex;justify-content: flex-end;width: 100%">
-                <button class="btn btn-primary" style="margin:1%">Wait untill next commit</button>
+                <button class="btn btn-primary" id="pass-commit" style="margin:1%">Wait untill next commit</button>
                 <button class="btn btn-primary" id="push-commit" style="margin:1%">Confirm</button>
             </div>
         </div>
         `)
         $(this).on('click', '#push-commit', () => {
-            debugger
+            ipcRenderer.send(`commit`, JSON.stringify({
+                repoId: CONTEXT.repoId,
+                windowId: CONTEXT.windowId,
+                stagedFiles: JSON.parse($(this).attr('stagedFiles'))
+            }))
+        })
+        $(this).on('click', `#pass-commit`, () => {
+            ipcRenderer.send(`unload-window-${CONTEXT.windowId}`)
         })
     }
 }

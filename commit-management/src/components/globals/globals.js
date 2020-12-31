@@ -1,5 +1,5 @@
 const $ = require('jQuery');
-const {ipcRenderer, ipcMain} = require('electron')
+const {ipcRenderer} = require('electron')
 const fs = require('fs')
 let CONTEXT = {}
 ipcRenderer.send('build-context')
