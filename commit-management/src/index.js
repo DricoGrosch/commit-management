@@ -1,7 +1,7 @@
 const {app, BrowserWindow, ipcMain, nativeTheme} = require('electron')
 require('./services/eventDispatcher')
 require('./services/cronjob')
-const {getAll} = require("./database/dataProvider");
+const {loadRepos} = require("./models/repository");
 const {buildContext} = require("./services/eventDispatcher");
 nativeTheme.themeSource = 'dark'
 app.on('ready',async  () => {
@@ -12,10 +12,11 @@ app.on('ready',async  () => {
             nodeIntegration: true
         }
     })
+    const repos = await loadRepos()
     window.loadFile('src/components/windows/index.html')
     window.setMenu(null)
     buildContext(window,{
-        repositories: await getAll()
+        repositories: repos
     })
     // window.webContents.openDevTools()
 })

@@ -4,6 +4,7 @@ const repositories = require('../api/repositories')
 const commits = require('../api/commits')
 const {transformPath, initializeRepository} = require('../services/folderManager')
 const {repositoriesFolder} = require('../../env.json')
+const chokidar = require('chokidar')
 
 async function createRepository(name) {
     const path = `${await transformPath(repositoriesFolder)}/${name}`
@@ -12,16 +13,14 @@ async function createRepository(name) {
     // repo = await repositories.createRepo(name)
     repo.path = path;
     repo.folderName = name;
-    repo.stagedFiles = {
-        added: [],
-        updated: [],
-        removed: [],
-    };
+    repo.stagedFiles = [];
     repo.allowAutoCommit = true
     try {
         await dataProvider.create(repo)
         await initializeRepository(repo.path)
+        await atachRepoWatcher(repo,true)
     } catch (e) {
+        console.log(e)
         fs.rmdirSync(repo.path)
     }
     return repo
@@ -32,6 +31,34 @@ async function getGitIgnoreFiles(repoPath) {
     return content.split('\r\n')
 }
 
+async function handleRepoChange(repo, path) {
+    const filesToIgnore = await getGitIgnoreFiles(repo.path)
+    const file = await getFileModel(await transformPath(path), repo.folderName)
+    if (!filesToIgnore.includes(file.name) && !filesToIgnore.includes(file.relativePath)) {
+        repo.stagedFiles.push(file)
+        dataProvider.update(repo)
+    }
+}
+
+async function atachRepoWatcher(repo,created=false) {
+    const watcher = chokidar.watch(repo.path,{ignoreInitial:!created})
+    watcher.on('add', async (path) => {
+        await handleRepoChange(repo, path)
+    })
+    watcher.on('unlink', async (path) => {
+        await handleRepoChange(repo, path)
+    })
+    watcher.on('change', async (path, stats) => {
+        await handleRepoChange(repo, path)
+    })
+}
+
+async function loadRepos() {
+    const repos = await dataProvider.getAll()
+    repos.forEach(async (repo) => await atachRepoWatcher(repo))
+    return repos
+}
+
 async function getRelativePath(path, repoName) {
     path = path.split('/')
     path = path.slice(path.indexOf(repoName) + 1,)
@@ -39,33 +66,16 @@ async function getRelativePath(path, repoName) {
     return path
 }
 
-async function getFiles(folderPath, repoName) {
-    folderPath = `${await transformPath(folderPath)}`
-    const folderRelativePath = await getRelativePath(folderPath, repoName)
-    let files = []
-    await fs.readdirSync(folderPath, {withFileTypes: true}).map(async (result) => {
-        if (result.isDirectory()) {
-            const folderFiles = await getFiles(`${await transformPath(folderPath)}/${result.name}`, repoName)
-            files = [...files, ...folderFiles]
-        } else {
-            const fullPath = `${folderPath}/${result.name}`
-            const relativePath = folderRelativePath.trim() !== '' ? `${folderRelativePath}/${result.name}` : result.name
-            const content = await fs.readFileSync(fullPath, {encoding: 'utf-8'})
-            files.push({
-                name: result.name,
-                fullPath,
-                relativePath,
-                content
-            })
-        }
-    })
-    return files
-}
-
-async function unstageFile(path, repoId) {
-    const repo = dataProvider.getOne(repoId)
-    repo.stagedFiles = repo.stagedFiles.filter(p => p !== path)
-    dataProvider.update(repo)
+async function getFileModel(fullPath, repoName) {
+    const name = fullPath.split('/').pop()
+    let relativePath = await getRelativePath(fullPath, repoName)
+    const content = await fs.readFileSync(fullPath, {encoding: 'utf-8'})
+    return {
+        name,
+        fullPath,
+        relativePath,
+        content
+    }
 }
 
 async function commit(repoId, files) {
@@ -77,10 +87,7 @@ async function commit(repoId, files) {
 
 module.exports = {
     createRepository,
-    getGitIgnoreFiles,
-    getRelativePath,
-    getFiles,
-    unstageFile,
-    commit
-
+    commit,
+    loadRepos
 }
+
