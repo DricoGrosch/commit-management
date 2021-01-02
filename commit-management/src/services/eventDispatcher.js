@@ -8,11 +8,9 @@ async function buildContext(window, data) {
     })
 }
 
-async function atachCloseEvent(window) {
-    ipcMain.on(`unload-window-${window.id}`, () => {
-        window.close()
-    })
-}
+ipcMain.on(`unload-window`, (event, windowId) => {
+    BrowserWindow.fromId(windowId).close()
+})
 
 ipcMain.on('create-new-repo', (event, name) => {
     createRepository(name)
@@ -29,5 +27,4 @@ ipcMain.on('commit', async (event, data) => {
 
 module.exports = {
     buildContext,
-    atachCloseEvent
 }

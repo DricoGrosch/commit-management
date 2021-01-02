@@ -19,10 +19,8 @@ cron.schedule(`*/${commitInterval} * * * *`, async () => {
         })
         window.loadFile('src/components/windows/commitConfirmation.html')
         window.setMenu(null)
-        nativeTheme.themeSource = 'dark'
-        window.webContents.openDevTools()
+        // window.webContents.openDevTools()
         buildContext(window, {repoId: repo.id, stagedFiles: repo.stagedFiles})
-        atachCloseEvent(window)
     });
 
 });

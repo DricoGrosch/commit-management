@@ -106,7 +106,7 @@
     "path": "C:/Users/drico/Desktop/Repos/test repo2",
     "folderName": "test repo2",
     "stagedFiles": [],
-    "allowAutoCommit": true
+    "allowAutoCommit": false
   },
   {
     "id": 325403674,
@@ -215,7 +215,7 @@
     "path": "C:/Users/drico/Desktop/Repos/test new repo",
     "folderName": "test new repo",
     "stagedFiles": [],
-    "allowAutoCommit": true
+    "allowAutoCommit": false
   },
   {
     "path": "C:/Users/drico/Desktop/Repos/aaaaaaaaa",

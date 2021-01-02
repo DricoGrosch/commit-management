@@ -1,35 +1,24 @@
 class FileConfirmation extends HTMLElement {
-    getIconByAction(action) {
-        switch (action) {
-            case 'added': {
-                return '<i class="fas fa-plus" style="color: green"></i>'
-            }
-            case 'updated': {
-                return '<i class="fas fa-pencil-alt" style="color: orange"></i>'
-            }
-            default : {
-                return '<i class="fas fa-minus-circle" style="color: red"></i>'
-            }
-        }
-    }
 
-    unstageFile(path) {
-        const stagedFiles = JSON.parse($('#commit-confirmation').attr('stagedFiles'))
-        $('#commit-confirmation').attr('stagedFiles', JSON.stringify(stagedFiles.filter(({relativePath}) => relativePath !== path)))
-        $(this).remove()
-    }
 
     connectedCallback() {
         const action = $(this).attr('action')
-        const path = $(this).attr('path')
+        const file = JSON.parse($(this).attr('file'))
+        const current = $(this).attr('current')
+        const target = $(this).attr('target')
         $(this).html(`
         <div style="display:flex;width: 100%">
-            <div style="width: 70%">${this.getIconByAction(action)} ${path}</div>
-            <div style="width: 30%"><button class="btn btn-primary unstageButton" style="font-size: 12px">Unstage</button></div>
+            <div style="width: 70%">${file.relativePath}</div>
+            <div style="width: 30%"><button class="btn btn-primary actionButton" style="font-size: 12px">${action.toUpperCase()}</button></div>
         </div>
         `)
-        $(this).on('click', '.unstageButton', () => {
-            this.unstageFile(path, action)
+        $(this).on('click', '.actionButton', () => {
+            $('#commit-confirmation').attr(current, (index, currentValue) => {
+                return JSON.stringify(JSON.parse(currentValue).filter(({relativePath}) => relativePath !== file.relativePath))
+            })
+            $('#commit-confirmation').attr(target, (index, currentValue) => {
+                return JSON.stringify([...JSON.parse(currentValue), file])
+            })
         })
     }
 }

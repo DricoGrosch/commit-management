@@ -18,7 +18,7 @@ async function createRepository(name) {
     try {
         await dataProvider.create(repo)
         await initializeRepository(repo.path)
-        await atachRepoWatcher(repo,true)
+        await atachRepoWatcher(repo, true)
     } catch (e) {
         console.log(e)
         fs.rmdirSync(repo.path)
@@ -40,8 +40,8 @@ async function handleRepoChange(repo, path) {
     }
 }
 
-async function atachRepoWatcher(repo,created=false) {
-    const watcher = chokidar.watch(repo.path,{ignoreInitial:!created})
+async function atachRepoWatcher(repo, created = false) {
+    const watcher = chokidar.watch(repo.path, {ignoreInitial: !created})
     watcher.on('add', async (path) => {
         await handleRepoChange(repo, path)
     })
@@ -80,9 +80,18 @@ async function getFileModel(fullPath, repoName) {
 
 async function commit(repoId, files) {
     const repo = await dataProvider.getOne(repoId)
-    //uncomment the line below to create github commit
-    // const commitTree = await commits.createTree(repo.name, repo.owner.login, files)
-    // const commit = await commits.createCommit(repo.name, repo.owner.login, commitTree, 'main')
+    try {
+
+        //uncomment the line below to create github commit
+        // const commitTree = await commits.createTree(repo.name, repo.owner.login, files)
+        // const commit = await commits.createCommit(repo.name, repo.owner.login, commitTree, 'main')
+        const commitedPaths = files.map(({path}) => path)
+        repo.stagedFiles = repo.stagedFiles(file => !commitedPaths.includes(file))
+        dataProvider.update(repo)
+    } catch (e) {
+        console.log(e)
+    }
+
 }
 
 module.exports = {

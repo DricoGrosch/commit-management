@@ -5,15 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9f7e5000-2ee5-45a0-a443-b9e5afa838f3" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/components/commitConfirmation/fileConfirmation.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/commitConfirmation/stagedFilesListBox.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/commitConfirmation/unstagedFilesListBox.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/globals/imports.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/globals/globals.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/globals/imports.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/globals/globals.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/database/dataProvider.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/dataProvider.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/database/local.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/local.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/commitConfirmation/commitConfirmation.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/commitConfirmation/commitConfirmation.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/commitConfirmation/fileConfirmation.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/commitConfirmation/fileConfirmation.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/globals/globals.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/globals/globals.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/windows/commitConfirmation.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/windows/commitConfirmation.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/database/localDatabase.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/localDatabase.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/models/repository.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/repository.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/services/cronjob.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/cronjob.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/services/eventDispatcher.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/eventDispatcher.js" afterDir="false" />
@@ -35,6 +34,14 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
   </component>
   <component name="ProjectId" id="1lx1FqkU2o1FNGt8WHpwr1r9KeH" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -112,7 +119,10 @@
       <workItem from="1609264813052" duration="12733000" />
       <workItem from="1609278617042" duration="6638000" />
       <workItem from="1609296645202" duration="3429000" />
-      <workItem from="1609300127096" duration="12071000" />
+      <workItem from="1609300127096" duration="12120000" />
+      <workItem from="1609367136533" duration="336000" />
+      <workItem from="1609367689028" duration="6218000" />
+      <workItem from="1609532133468" duration="17223000" />
     </task>
     <servers />
   </component>
@@ -123,16 +133,10 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/components/commitConfirmation/fileConfirmation.js</url>
-          <line>16</line>
+          <url>file://$PROJECT_DIR$/src/services/eventDispatcher.js</url>
+          <line>22</line>
           <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="13" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/components/commitConfirmation/commitConfirmation.js</url>
-          <line>24</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="14" />
+          <option name="timeStamp" value="32" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
