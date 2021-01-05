@@ -81,7 +81,6 @@ async function getFileModel(fullPath, repoName) {
 async function commit(repoId, files) {
     const repo = await dataProvider.getOne(repoId)
     try {
-
         //uncomment the line below to create github commit
         // const commitTree = await commits.createTree(repo.name, repo.owner.login, files)
         // const commit = await commits.createCommit(repo.name, repo.owner.login, commitTree, 'main')

@@ -18,7 +18,7 @@ class CommitConfirmation extends HTMLElement {
         $('#staged-files').html(files.reduce((content, file) => content += `<file-confirmation current="stagedfiles" target="unstagedfiles" action="unstage" file=${JSON.stringify(file)}></file-confirmation>`, ''))
     }
 
-    attributeChangedCallback(name, oldValue, newValue) {
+    attributeChangedCallback(name) {
         name === 'stagedfiles' ? this.updateStagedFiles() : this.updateUnstagedFiles()
     }
 

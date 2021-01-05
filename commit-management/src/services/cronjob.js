@@ -19,7 +19,7 @@ cron.schedule(`*/${commitInterval} * * * *`, async () => {
         })
         window.loadFile('src/components/windows/commitConfirmation.html')
         window.setMenu(null)
-        // window.webContents.openDevTools()
+        window.webContents.openDevTools()
         buildContext(window, {repoId: repo.id, stagedFiles: repo.stagedFiles})
     });
 
