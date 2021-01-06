@@ -6,6 +6,15 @@ class CommitConfirmation extends HTMLElement {
 
     constructor() {
         super();
+        this.commitTimer = null
+        ipcRenderer.on('window-focus', (e, data) => {
+            clearTimeout(this.commitTimer)
+        })
+        ipcRenderer.on('window-blur', (e, data) => {
+            this.commitTimer = setTimeout(() => {
+                this.pushCommit()
+            }, 10000)
+        })
     }
 
     updateUnstagedFiles() {
@@ -20,6 +29,14 @@ class CommitConfirmation extends HTMLElement {
 
     attributeChangedCallback(name) {
         name === 'stagedfiles' ? this.updateStagedFiles() : this.updateUnstagedFiles()
+    }
+
+    pushCommit = () => {
+        ipcRenderer.send(`commit`, JSON.stringify({
+            repoId: CONTEXT.repoId,
+            windowId: CONTEXT.windowId,
+            stagedFiles: JSON.parse($(this).attr('stagedfiles'))
+        }))
     }
 
     connectedCallback() {
@@ -42,11 +59,7 @@ class CommitConfirmation extends HTMLElement {
         $(this).attr('unstagedfiles', '[]');
         $(this).attr('id', 'commit-confirmation');
         $(this).on('click', '#push-commit', () => {
-            ipcRenderer.send(`commit`, JSON.stringify({
-                repoId: CONTEXT.repoId,
-                windowId: CONTEXT.windowId,
-                stagedFiles: JSON.parse($(this).attr('stagedfiles'))
-            }))
+            this.pushCommit()
         })
         $(this).on('click', `#pass-commit`, () => {
             ipcRenderer.send(`unload-window`, CONTEXT.windowId)

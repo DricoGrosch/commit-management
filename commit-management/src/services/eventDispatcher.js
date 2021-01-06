@@ -24,7 +24,10 @@ ipcMain.on('commit', async (event, data) => {
     await commit(repoId, stagedFiles)
     BrowserWindow.fromId(windowId).close()
 })
-
+ipcMain.on('auth-user',async(event,data)=>{
+    const {username,password} = JSON.parse(data)
+    authenticate(username,password)
+})
 module.exports = {
     buildContext,
 }

@@ -1,0 +1,4 @@
+module.exports = {
+    CLIENT_ID: '509febe60edc22869045',
+    CLIENT_SECRET: '708267c2458c6159cf9bd5638e7385a48922082a',
+}
