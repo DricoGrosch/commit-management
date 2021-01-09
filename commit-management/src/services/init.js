@@ -2,6 +2,8 @@ const {BrowserWindow} = require('electron')
 const {CLIENT_ID} = require('../../app_config')
 const {loadRepos} = require("../models/repository");
 const {buildContext} = require("../services/eventDispatcher");
+const Config = require('../database/entities/Config')
+const {createOctokit} = require("./octokit");
 
 async function init(access_token) {
     const windows = BrowserWindow.getAllWindows()
@@ -13,13 +15,28 @@ async function init(access_token) {
         }
     })
 
-    const repos = await loadRepos()
-    access_token ? window.loadFile('src/components/windows/index.html') : window.loadURL(`https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}`)
-    window.webContents.openDevTools()
+    if (access_token) {
+        let config = await Config.query().first()
+        if (!config) {
+            config = await Config.query().insert({
+                accessToken: access_token
+            })
+        } else {
+            await Config.query().patch({accessToken: access_token})
+        }
+        window.loadFile('src/components/windows/index.html')
+        const repos = await loadRepos()
+        buildContext(window, {
+            repositories: repos,
+            config: config
+        })
+    } else {
+        window.loadURL(`https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}`)
+    }
     window.setMenu(null)
-    buildContext(window, {
-        repositories: repos
-    })
+    global.octokit = await createOctokit(access_token)
+
+
 }
 
 module.exports = {

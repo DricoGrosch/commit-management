@@ -7,7 +7,7 @@ class Config extends Model {
 
     static get jsonSchema() {
         return {
-            ACCESS_TOKEN: {type: 'string'},
+            accessToken: {type: 'string'},
             repositoriesFolder: {type: 'string'},
             useRemoteDataProvider: {type: 'boolean'},
             commitInterval: {type: 'string'},

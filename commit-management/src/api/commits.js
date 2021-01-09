@@ -1,8 +1,7 @@
-const {ACCESS_TOKEN} = require('../../env.json')
-const {Octokit} = require("@octokit/core");
-const octokit = new Octokit({auth: ACCESS_TOKEN});
 const {createReference, updateReference, listReferences} = require('./references')
 const moment = require('moment')
+const octokit = global.octokit
+
 
 async function createTree(repoName, owner, files) {
     const commitTree = files.map(file => {

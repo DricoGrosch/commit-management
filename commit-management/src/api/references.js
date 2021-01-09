@@ -1,6 +1,4 @@
-const {ACCESS_TOKEN} = require('../../env.json')
-const {Octokit} = require("@octokit/core");
-const octokit = new Octokit({auth: ACCESS_TOKEN});
+const octokit = global.octokit
 
 async function listReferences(repoName, owner, branchName = '') {
     const response = await octokit.request('GET /repos/{owner}/{repo}/git/matching-refs/{ref}', {
