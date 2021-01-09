@@ -26,7 +26,6 @@ async function init(access_token) {
         }
         window.loadFile('src/components/windows/index.html')
         const repos = await loadRepos()
-        //nao mandar a config pelo contexto, fazer um evento pra isso
         buildContext(window, {
             repositories: repos,
             config: config

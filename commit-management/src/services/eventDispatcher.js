@@ -1,5 +1,6 @@
-const {ipcMain, BrowserWindow} = require('electron')
+const {app,ipcMain, BrowserWindow} = require('electron')
 const {createRepository, commit} = require('../models/repository.js')
+const Config = require('../database/entities/Config')
 
 async function buildContext(window, data) {
     data.windowId = window.id
@@ -24,9 +25,11 @@ ipcMain.on('commit', async (event, data) => {
     await commit(repoId, stagedFiles)
     BrowserWindow.fromId(windowId).close()
 })
-ipcMain.on('auth-user',async(event,data)=>{
-    const {username,password} = JSON.parse(data)
-    authenticate(username,password)
+ipcMain.on('save-config', async (event, data) => {
+    const config = JSON.parse(data)
+    await Config.query().patchAndFetchById(config.id, config)
+    app.relaunch()
+    app.exit()
 })
 module.exports = {
     buildContext,
