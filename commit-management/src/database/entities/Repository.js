@@ -1,4 +1,6 @@
 const fs = require("fs");
+const {transformPath} = require("../../services/folderManager");
+const {getFileModel} = require("../../services/folderManager");
 const {Model} = require("objection");
 
 class Repository extends Model {
@@ -103,12 +105,13 @@ class Repository extends Model {
         })
     }
 
-    static async loadRepos() {
-        const repos = await dataProvider.getAll()
-        repos.forEach(async (repo) => await atachWatcher(repo))
+    static async loadAll() {
+        const repos = await this.query();
+        for (const repo of repos) {
+            await repo.atachWatcher();
+        }
         return repos
     }
-
 
     async handleChange(path) {
         const filesToIgnore = await this.getGitIgnoreFiles()

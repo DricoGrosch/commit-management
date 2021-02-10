@@ -6,12 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="9f7e5000-2ee5-45a0-a443-b9e5afa838f3" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/dev.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/globals/globals.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/globals/globals.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/toolbar/toolbar.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/toolbar/toolbar.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/database/entities/Repository.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/entities/Repository.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/repository.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/repository.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/repository.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/eventDispatcher.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/eventDispatcher.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/services/folderManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/folderManager.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/init.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/init.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -121,7 +120,7 @@
       <workItem from="1609532133468" duration="17223000" />
       <workItem from="1612922040969" duration="35000" />
       <workItem from="1612922090790" duration="143000" />
-      <workItem from="1612922278081" duration="801000" />
+      <workItem from="1612922278081" duration="1290000" />
     </task>
     <servers />
   </component>
@@ -129,6 +128,27 @@
     <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/services/eventDispatcher.js</url>
+          <line>26</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

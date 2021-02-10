@@ -1,8 +1,8 @@
 const {BrowserWindow} = require('electron')
 const {CLIENT_ID} = require('../../app_config')
-const {loadRepos} = require("../models/repository");
 const {buildContext} = require("../services/eventDispatcher");
 const Config = require('../database/entities/Config')
+const Repository = require("../database/entities/Repository");
 const {createOctokit} = require("./octokit");
 
 async function init(access_token) {
@@ -25,7 +25,7 @@ async function init(access_token) {
             await Config.query().patch({accessToken: access_token})
         }
         window.loadFile('src/components/windows/index.html')
-        const repos = await loadRepos()
+        const repos = await Repository.loadAll()
         buildContext(window, {
             repositories: repos,
             config: config
