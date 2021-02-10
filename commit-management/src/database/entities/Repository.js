@@ -1,3 +1,4 @@
+const fs = require("fs");
 const {Model} = require("objection");
 
 class Repository extends Model {
@@ -30,12 +31,13 @@ class Repository extends Model {
             }
         }
     }
+
     static get relationMappings() {
         const Owner = require('./Owner')
         return {
-            owner:{
-                relation:Model.HasOneRelation,
-                modelClass:Owner,
+            owner: {
+                relation: Model.HasOneRelation,
+                modelClass: Owner,
                 join: {
                     from: 'repository.ownerId',
                     to: 'owner.id'
@@ -43,6 +45,96 @@ class Repository extends Model {
             }
         }
     }
+
+    static async create(name) {
+        const path = `${await transformPath(repositoriesFolder)}/${name}`
+        let repo = {}
+        //uncomment the line below to create github repository
+        // repo = await repositories.createRepo(name)
+        repo.path = path;
+        repo.folderName = name;
+        repo.stagedFiles = [];
+        repo.allowAutoCommit = true
+        try {
+            repo = await this.query().insert({
+                path: repo.path,
+                folderName: repo.folderName,
+                stagedFiles: repo.stagedFiles,
+                allowAutoCommit: repo.allowAutoCommit,
+                default_branch: repo.default_branch,
+                created_at: repo.created_at,
+                updated_at: repo.updated_at,
+                pushed_at: repo.pushed_at,
+                deployments_url: repo.deployments_url,
+                pulls_url: repo.pulls_url,
+                contents_url: repo.contents_url,
+                compare_url: repo.compare_url,
+                merges_url: repo.merges_url,
+                url: repo.url,
+                id: repo.id,
+                node_id: repo.node_id,
+                name: repo.name,
+                full_name: repo.full_name,
+            })
+            await initializeRepository(repo.path)
+            await repo.atachWatcher(true)
+        } catch (e) {
+            console.log(e)
+            fs.rmdirSync(repo.path)
+        }
+        return repo
+    }
+
+    async getGitIgnoreFiles() {
+        const content = fs.readFileSync(`${this.path}/.gitignore`, {encoding: 'utf-8'})
+        return content.split('\r\n')
+    }
+
+    async atachWatcher(created = false) {
+        const watcher = chokidar.watch(this.path, {ignoreInitial: !created})
+        watcher.on('add', async (path) => {
+            await this.handleChange(path)
+        })
+        watcher.on('unlink', async (path) => {
+            await this.handleChange(path)
+        })
+        watcher.on('change', async (path, stats) => {
+            await this.handleChange(path)
+        })
+    }
+
+    static async loadRepos() {
+        const repos = await dataProvider.getAll()
+        repos.forEach(async (repo) => await atachWatcher(repo))
+        return repos
+    }
+
+
+    async handleChange(path) {
+        const filesToIgnore = await this.getGitIgnoreFiles()
+        const file = await getFileModel(await transformPath(path), this.folderName)
+        if (!filesToIgnore.includes(file.name) && !filesToIgnore.includes(file.relativePath)) {
+            //todo
+            // this.stagedFiles.push(file)
+            // dataProvider.update(repo)
+        }
+    }
+
+    async commit(files) {
+        try {
+            //uncomment the line below to create github commit
+            // const commitTree = await commits.createTree(repo.name, repo.owner.login, files)
+            // const commit = await commits.createCommit(repo.name, repo.owner.login, commitTree, 'main')
+            const commitedPaths = files.map(({path}) => path)
+            this.stagedFiles = this.stagedFiles(file => !commitedPaths.includes(file))
+            //todo
+            dataProvider.update(repo)
+        } catch (e) {
+            console.log(e)
+        }
+
+    }
+
 }
 
 module.exports = Repository

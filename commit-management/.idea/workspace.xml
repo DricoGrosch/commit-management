@@ -5,17 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9f7e5000-2ee5-45a0-a443-b9e5afa838f3" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/components/commitConfirmation/stagedFilesListBox.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/commitConfirmation/unstagedFilesListBox.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/commitConfirmation/commitConfirmation.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/commitConfirmation/commitConfirmation.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/commitConfirmation/fileConfirmation.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/commitConfirmation/fileConfirmation.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/globals/globals.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/globals/globals.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/windows/commitConfirmation.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/windows/commitConfirmation.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/database/localDatabase.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/localDatabase.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/dev.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/globals/globals.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/globals/globals.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/toolbar/toolbar.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/toolbar/toolbar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/database/entities/Repository.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/entities/Repository.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/models/repository.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/repository.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/cronjob.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/cronjob.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/eventDispatcher.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/eventDispatcher.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/folderManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/folderManager.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,9 +52,9 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="javascript.nodejs.core.library.configured.version" value="11.1.1" />
-    <property name="javascript.nodejs.core.library.typings.version" value="11.15.42" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/GUIComponents" />
+    <property name="javascript.nodejs.core.library.configured.version" value="14.15.4" />
+    <property name="javascript.nodejs.core.library.typings.version" value="14.14.25" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="nodejs_interpreter_path" value="node" />
     <property name="nodejs_package_manager_path" value="npm" />
@@ -123,22 +119,16 @@
       <workItem from="1609367136533" duration="336000" />
       <workItem from="1609367689028" duration="6218000" />
       <workItem from="1609532133468" duration="17223000" />
+      <workItem from="1612922040969" duration="35000" />
+      <workItem from="1612922090790" duration="143000" />
+      <workItem from="1612922278081" duration="801000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/services/eventDispatcher.js</url>
-          <line>22</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="32" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>
