@@ -1,8 +1,9 @@
 const cron = require('node-cron');
-const {commitInterval} = require('../../env.json')
 const {buildContext, atachCloseEvent} = require("./eventDispatcher");
 const {BrowserWindow, app} = require('electron')
-const {getAll, update} = require('../database/dataProvider')
+const Config = require('../database/entities/Config')
+Config.getUserConfig().then(({commitInterval}) => {
+    console.log()
 //chato pra krl, deixa comentado
 // cron.schedule(`*/${commitInterval} * * * *`, async () => {
 //     const repos = await getAll()
@@ -34,3 +35,6 @@ const {getAll, update} = require('../database/dataProvider')
 //     });
 //
 // });
+    }, (e) => {
+    console.log(e)
+});

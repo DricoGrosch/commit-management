@@ -30,6 +30,13 @@ class Repository extends Model {
                 node_id: {type: 'string'},
                 name: {type: 'string'},
                 full_name: {type: 'string'},
+                relationMappings: {type: 'method'},
+                create: {type: 'method'},
+                getGitIgnoreFiles: {type: 'method'},
+                atachWatcher: {type: 'method'},
+                loadAll: {type: 'method'},
+                handleChange: {type: 'method'},
+                commit: {type: 'method'},
             }
         }
     }

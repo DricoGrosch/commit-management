@@ -11,7 +11,11 @@ class Config extends Model {
             repositoriesFolder: {type: 'string'},
             useRemoteDataProvider: {type: 'boolean'},
             commitInterval: {type: 'string'},
+            getUserConfig: {type: 'method'},
         }
+    }
+    static async getUserConfig(){
+        return await this.query().first()
     }
 }
 

@@ -1,5 +1,4 @@
 const {app,ipcMain, BrowserWindow} = require('electron')
-const {createRepository, commit} = require('../models/repository.js')
 const Config = require('../database/entities/Config')
 const Repository = require("../database/entities/Repository");
 

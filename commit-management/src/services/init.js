@@ -16,7 +16,7 @@ async function init(access_token) {
     })
 
     if (access_token) {
-        let config = await Config.query().first()
+        let config = await Config.getUserConfig()
         if (!config) {
             config = await Config.query().insert({
                 accessToken: access_token
