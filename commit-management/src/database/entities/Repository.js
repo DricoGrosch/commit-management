@@ -1,8 +1,9 @@
 const fs = require("fs");
-const {transformPath} = require("../../services/folderManager");
-const {getFileModel} = require("../../services/folderManager");
+const {transformPath,getFileModel,initializeRepository} = require("../../services/folderManager");
 const {Model} = require("objection");
-
+const Config = require('./Config')
+const repositories = require("../../api/repositories");
+const chokidar = require("chokidar");
 class Repository extends Model {
     static get tableName() {
         return 'repository'
@@ -15,7 +16,7 @@ class Repository extends Model {
                 path: {type: 'string'},
                 folderName: {type: 'string'},
                 stagedFiles: {type: 'string'},
-                allowAutoCommit: {type: 'string'},
+                allowAutoCommit: {type: 'boolean'},
                 default_branch: {type: 'string'},
                 created_at: {type: 'string'},
                 updated_at: {type: 'string'},
@@ -26,7 +27,7 @@ class Repository extends Model {
                 compare_url: {type: 'string'},
                 merges_url: {type: 'string'},
                 url: {type: 'string'},
-                id: {type: 'string'},
+                id: {type: 'long'},
                 node_id: {type: 'string'},
                 name: {type: 'string'},
                 full_name: {type: 'string'},
@@ -56,10 +57,11 @@ class Repository extends Model {
     }
 
     static async create(name) {
-        const path = `${await transformPath(repositoriesFolder)}/${name}`
+        const config = await Config.getUserConfig()
+        const path = `${await transformPath(config.repositoriesFolder)}/${name}`
         let repo = {}
         //uncomment the line below to create github repository
-        // repo = await repositories.createRepo(name)
+        repo = await repositories.createRepo(name)
         repo.path = path;
         repo.folderName = name;
         repo.stagedFiles = [];
@@ -68,7 +70,7 @@ class Repository extends Model {
             repo = await this.query().insert({
                 path: repo.path,
                 folderName: repo.folderName,
-                stagedFiles: repo.stagedFiles,
+                stagedFiles: JSON.stringify(repo.stagedFiles),
                 allowAutoCommit: repo.allowAutoCommit,
                 default_branch: repo.default_branch,
                 created_at: repo.created_at,

@@ -30,12 +30,11 @@ async function init(access_token) {
             repositories: repos,
             config: config
         })
+        global.octokit = await createOctokit(access_token)
     } else {
-        window.loadURL(`https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}`)
+        window.loadURL(`https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&scope=repo`)
     }
     window.setMenu(null)
-    window.webContents.openDevTools()
-    global.octokit = await createOctokit(access_token)
 
 
 }

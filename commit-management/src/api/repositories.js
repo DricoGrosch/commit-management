@@ -1,11 +1,15 @@
-const octokit = global.octokit
 async function createRepo(name) {
-    let response = await octokit.request('POST /user/repos', {
-        name,
-        auto_init: true
-    })
-    console.log('repository created successfully on origin')
-    return response.data
+    try {
+
+        let response = await global.octokit.request('POST /user/repos', {
+            name,
+            auto_init: true
+        })
+        console.log('repository created successfully on origin')
+        return response.data
+    } catch (e) {
+        return null
+    }
 }
 
 module.exports = {

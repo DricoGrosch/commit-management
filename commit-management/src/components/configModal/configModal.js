@@ -11,13 +11,15 @@ class ConfigModal extends HTMLElement {
     attributeChangedCallback(name, oldValue, newValue) {
         newValue ? $(this).show() : $(this).hide()
     }
-    getFolder(files){
+
+    getFolder(files) {
+        debugger
         const folderName = files[0].webkitRelativePath.split('/')[0]
         let path = files[0].path.replace(/\\/g, '/').split('/')
-        path = path.slice(0,path.indexOf(folderName)+1).join('/')
-        debugger
+        path = path.slice(0, path.indexOf(folderName) + 1).join('/')
         return path
     }
+
     connectedCallback() {
         $(this).css('display', 'none')
         $(this).attr('id', 'config-modal')
@@ -29,8 +31,7 @@ class ConfigModal extends HTMLElement {
                     <div style="width: 100%"><h2>Config handler</h2></div>
                     <div style="width: 100%">      
                         <label for="repo-name">Repository name</label>
-                        <input type="text" disabled value="${this.config.repositoriesFolder}" class="form-control">
-                        <input type="file" webkitdirectory  directory  id="repo-folder" class="form-control">
+                        <input readonly type="text" placeholder="${this.config.repositoriesFolder ?? 'Selecione o respositório'}" id="repo-folder" class="form-control">
                         <label for="repo-name">Commit interval</label>
                         <input type="number" value="${this.config.commitInterval}"id="commit-interval"  placeholder="Enter the commit interval" class="form-control">
                     </div>
@@ -47,14 +48,20 @@ class ConfigModal extends HTMLElement {
             $('#repo-folder').val('')
             $('#commit-interval').val('')
         })
-        $('#repo-folder').on('change', (e) => {
-            this.config.repositoriesFolder = this.getFolder(e.target.files)
+        $('#repo-folder').on('click', (e) => {
+            e.preventDefault()
+            ipcRenderer.send('select-dir', JSON.stringify(CONTEXT.windowId))
         })
         $('#commit-interval').on('change', (e) => {
             this.config.commitInterval = e.target.value
         })
         $('#save-config').on('click', () => {
             ipcRenderer.send('save-config', JSON.stringify(this.config))
+        })
+        ipcRenderer.on('selected-dir', (e, data) => {
+            debugger
+            $('#repo-folder').attr('placeholder', data)
+            this.config.repositoriesFolder = data
         })
 
     }

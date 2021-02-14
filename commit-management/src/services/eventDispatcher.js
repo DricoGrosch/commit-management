@@ -1,4 +1,4 @@
-const {app,ipcMain, BrowserWindow} = require('electron')
+const {app,ipcMain, BrowserWindow,dialog} = require('electron')
 const Config = require('../database/entities/Config')
 const Repository = require("../database/entities/Repository");
 
@@ -31,6 +31,12 @@ ipcMain.on('save-config', async (event, data) => {
     await Config.query().patchAndFetchById(config.id, config)
     app.relaunch()
     app.exit()
+})
+ipcMain.on('select-dir', async (event, arg) => {
+  const result = await dialog.showOpenDialog({
+    properties: ['openDirectory']
+  })
+    event.reply('selected-dir', result.filePaths[0])
 })
 module.exports = {
     buildContext,

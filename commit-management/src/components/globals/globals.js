@@ -10,10 +10,3 @@ ipcRenderer.on('build-context-reply', (event, data) => {
         $('head').append(html)
     })
 })
-
-
-main
-eventos
-
-
-render
