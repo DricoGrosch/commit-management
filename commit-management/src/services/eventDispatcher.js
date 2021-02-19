@@ -1,6 +1,6 @@
 const {app,ipcMain, BrowserWindow,dialog} = require('electron')
 const Config = require('../database/entities/Config')
-const Repository = require("../database/entities/qlm4da");
+const Repository = require("../database/entities/Repository");
 
 async function buildContext(window, data) {
     data.windowId = window.id

@@ -23,7 +23,7 @@ class StagedFile extends Model {
     }
 
     static get relationMappings() {
-        const Repository = require('./qlm4da')
+        const Repository = require('./Repository')
         return {
             repository: {
                 relation: Model.HasOneRelation,
