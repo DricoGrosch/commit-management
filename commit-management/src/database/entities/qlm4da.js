@@ -42,7 +42,7 @@ class Repository extends Model {
                 getGitIgnoreFiles: {type: 'method'},
                 atachWatcher: {type: 'method'},
                 loadAll: {type: 'method'},
-                handleChange: {type: 'method'},
+                handleLink: {type: 'method'},
                 commit: {type: 'method'},
                 getStagedFiles: {type: 'method'},
                 unstage: {type: 'method'},
@@ -141,21 +141,14 @@ class Repository extends Model {
 
     async atachWatcher(created = false) {
         const watcher = chokidar.watch(this.path, {ignoreInitial: !created})
-        watcher.on('add', async (path, stats) => {
-            await this.handleChange(path)
+        watcher.on('add', async (path) => {
+            await this.handleLink(path)
         })
         watcher.on('unlink', async (path) => {
-            path = await transformPath(path)
-            try {
-                await StagedFile.query().delete().where('fullPath', path)
-            } catch (e) {
-                console.log(e)
-            }
+            this.handleUnlink(path)
         })
-        watcher.on('change', async (path, stats) => {
-            path = await transformPath(path)
-            const content = fs.readFileSync(path, 'utf8')
-            await StagedFile.query().where('fullPath', path).first().patch({content})
+        watcher.on('change', async (path) => {
+            this.handleChange(path)
         })
     }
 
@@ -167,7 +160,7 @@ class Repository extends Model {
         return repos
     }
 
-    async handleChange(fullPath) {
+    async handleLink(fullPath) {
         fullPath = await transformPath(fullPath)
         const filesToIgnore = await this.getGitIgnoreFiles()
         const trx = await StagedFile.startTransaction();
@@ -190,6 +183,21 @@ class Repository extends Model {
         } catch (err) {
             throw err;
         }
+    }
+
+    async handleUnlink(fullPath) {
+        fullPath = await transformPath(fullPath)
+        try {
+            await StagedFile.query().delete().where('fullPath', fullPath)
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    async handleChange(fullPath) {
+        fullPath = await transformPath(fullPath)
+        const content = fs.readFileSync(fullPath, 'utf8')
+        await StagedFile.query().where('fullPath', fullPath).first().patch({content})
     }
 
     async commit(files) {
