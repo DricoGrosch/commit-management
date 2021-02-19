@@ -2,7 +2,7 @@ const {BrowserWindow} = require('electron')
 const {CLIENT_ID} = require('../../app_config')
 const {buildContext} = require("../services/eventDispatcher");
 const Config = require('../database/entities/Config')
-const Repository = require("../database/entities/Repository");
+const Repository = require("../database/entities/qlm4da");
 const {createOctokit} = require("./octokit");
 
 async function init(access_token) {

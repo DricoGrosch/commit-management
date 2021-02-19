@@ -141,14 +141,21 @@ class Repository extends Model {
 
     async atachWatcher(created = false) {
         const watcher = chokidar.watch(this.path, {ignoreInitial: !created})
-        watcher.on('add', async (path) => {
+        watcher.on('add', async (path, stats) => {
             await this.handleChange(path)
         })
         watcher.on('unlink', async (path) => {
-            await this.handleChange(path)
+            path = await transformPath(path)
+            try {
+                await StagedFile.query().delete().where('fullPath', path)
+            } catch (e) {
+                console.log(e)
+            }
         })
         watcher.on('change', async (path, stats) => {
-            await this.handleChange(path)
+            path = await transformPath(path)
+            const content = fs.readFileSync(path, 'utf8')
+            await StagedFile.query().where('fullPath', path).first().patch({content})
         })
     }
 
@@ -190,7 +197,6 @@ class Repository extends Model {
             const commitTree = await commits.createTree(this.name, this.owner.login, files)
             await commits.createCommit(this.name, this.owner.login, commitTree, 'main')
             await this.unstageFiles(files)
-
         } catch (e) {
             console.log(e)
         }

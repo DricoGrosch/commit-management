@@ -5,7 +5,7 @@ exports.up = async function (knex) {
         table.string('fullPath').notNullable()
         table.string('relativePath').notNullable()
         table.text('content').nullable()
-        table.bigInteger('repositoryId').references('id').inTable('stagedFile').notNullable()
+        table.bigInteger('repositoryId').references('id').inTable('repository').notNullable()
     })
 
 };
