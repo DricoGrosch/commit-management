@@ -3,7 +3,6 @@ exports.up = async function (knex) {
         table.bigInteger('id').primary();
         table.string('path').notNullable()
         table.string('folderName').notNullable()
-        table.string('stagedFiles').notNullable()
         table.string('allowAutoCommit').notNullable()
         table.string('default_branch').notNullable()
         table.string('created_at').notNullable()

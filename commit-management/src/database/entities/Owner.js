@@ -9,8 +9,8 @@ class Owner extends Model {
         return {
             type: 'object',
             properties: {
+                id: {type: 'long'},
                 login: {type: 'string'},
-                id: {type: 'string'},
                 node_id: {type: 'string'},
                 avatar_url: {type: 'string'},
                 gravatar_id: {type: 'string'},
@@ -26,7 +26,7 @@ class Owner extends Model {
                 events_url: {type: 'string'},
                 received_events: {type: 'string'},
                 type: {type: 'string'},
-                site_admin: {type: 'string'},
+                site_admin: {type: 'boolean'},
             }
 
 

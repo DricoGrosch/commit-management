@@ -2,7 +2,6 @@ exports.up = async function (knex) {
     await knex.schema.createTable('owner', table => {
         table.bigInteger('id').primary();
         table.string('login').notNullable();
-        table.string('git_id').notNullable();
         table.string('node_id').notNullable();
         table.string('avatar_url').notNullable();
         table.string('gravatar_id').notNullable();
@@ -16,9 +15,9 @@ exports.up = async function (knex) {
         table.string('organizations_url').notNullable();
         table.string('repos_url').notNullable();
         table.string('events_url').notNullable();
-        table.string('received_events').notNullable();
+        table.string('received_events').nullable();
         table.string('type').notNullable();
-        table.string('site_admin').notNullable();
+        table.boolean('site_admin').notNullable();
 
     })
 };

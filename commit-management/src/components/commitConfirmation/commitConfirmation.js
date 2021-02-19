@@ -4,18 +4,18 @@ class CommitConfirmation extends HTMLElement {
         return ['stagedfiles', 'unstagedfiles'];
     }
 
-    constructor() {
-        super();
-        this.commitTimer = null
-        ipcRenderer.on('window-focus', (e, data) => {
-            clearTimeout(this.commitTimer)
-        })
-        ipcRenderer.on('window-blur', (e, data) => {
-            this.commitTimer = setTimeout(() => {
-                this.pushCommit()
-            }, 10000)
-        })
-    }
+    // constructor() {
+    //     super();
+    //     this.commitTimer = null
+        // ipcRenderer.on('window-focus', (e, data) => {
+        //     clearTimeout(this.commitTimer)
+        // })
+        // ipcRenderer.on('window-blur', (e, data) => {
+        //     this.commitTimer = setTimeout(() => {
+        //         this.pushCommit()
+        //     }, 10000)
+        // })
+    // }
 
     updateUnstagedFiles() {
         const files = JSON.parse($(this).attr('unstagedfiles'))

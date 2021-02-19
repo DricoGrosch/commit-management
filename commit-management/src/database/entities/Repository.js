@@ -1,9 +1,16 @@
 const fs = require("fs");
-const {transformPath,getFileModel,initializeRepository} = require("../../services/folderManager");
+
+const {transformPath, initializeRepository} = require("../../services/folderManager");
 const {Model} = require("objection");
 const Config = require('./Config')
 const repositories = require("../../api/repositories");
 const chokidar = require("chokidar");
+const commits = require("../../api/commits");
+const Owner = require("./Owner");
+const StagedFile = require("./StagedFile");
+const {getRelativePath} = require("../../services/folderManager");
+const {transaction} = require('objection');
+
 class Repository extends Model {
     static get tableName() {
         return 'repository'
@@ -15,7 +22,6 @@ class Repository extends Model {
             properties: {
                 path: {type: 'string'},
                 folderName: {type: 'string'},
-                stagedFiles: {type: 'string'},
                 allowAutoCommit: {type: 'boolean'},
                 default_branch: {type: 'string'},
                 created_at: {type: 'string'},
@@ -38,8 +44,20 @@ class Repository extends Model {
                 loadAll: {type: 'method'},
                 handleChange: {type: 'method'},
                 commit: {type: 'method'},
+                getStagedFiles: {type: 'method'},
+                unstage: {type: 'method'},
             }
         }
+    }
+
+
+    async getStagedFiles() {
+        return StagedFile.query();
+    }
+
+    async unstageFiles(files) {
+        const idsToRemove = files.map(({id}) => id)
+        StagedFile.query().delete().whereIn('id', idsToRemove)
     }
 
     static get relationMappings() {
@@ -64,13 +82,32 @@ class Repository extends Model {
         repo = await repositories.createRepo(name)
         repo.path = path;
         repo.folderName = name;
-        repo.stagedFiles = [];
         repo.allowAutoCommit = true
         try {
+            const owner = await Owner.query().insert({
+                id: repo.owner.id,
+                login: repo.owner.login,
+                node_id: repo.owner.node_id,
+                avatar_url: repo.owner.avatar_url,
+                gravatar_id: repo.owner.gravatar_id,
+                url: repo.owner.url,
+                html_url: repo.owner.html_url,
+                followers_url: repo.owner.followers_url,
+                following_url: repo.owner.following_url,
+                gists_url: repo.owner.gists_url,
+                starred_url: repo.owner.starred_url,
+                subscriptions_url: repo.owner.subscriptions_url,
+                organizations_url: repo.owner.organizations_url,
+                repos_url: repo.owner.repos_url,
+                events_url: repo.owner.events_url,
+                received_events: repo.owner.received_events,
+                type: repo.owner.type,
+                site_admin: repo.owner.site_admin,
+            })
+
             repo = await this.query().insert({
                 path: repo.path,
                 folderName: repo.folderName,
-                stagedFiles: JSON.stringify(repo.stagedFiles),
                 allowAutoCommit: repo.allowAutoCommit,
                 default_branch: repo.default_branch,
                 created_at: repo.created_at,
@@ -86,6 +123,7 @@ class Repository extends Model {
                 node_id: repo.node_id,
                 name: repo.name,
                 full_name: repo.full_name,
+                ownerId: owner.id,
             })
             await initializeRepository(repo.path)
             await repo.atachWatcher(true)
@@ -122,25 +160,37 @@ class Repository extends Model {
         return repos
     }
 
-    async handleChange(path) {
+    async handleChange(fullPath) {
+        fullPath = await transformPath(fullPath)
         const filesToIgnore = await this.getGitIgnoreFiles()
-        const file = await getFileModel(await transformPath(path), this.folderName)
-        if (!filesToIgnore.includes(file.name) && !filesToIgnore.includes(file.relativePath)) {
-            //todo
-            // this.stagedFiles.push(file)
-            // dataProvider.update(repo)
+        const trx = await StagedFile.startTransaction();
+        try {
+            const name = fullPath.split('/').pop()
+            let relativePath = await getRelativePath(fullPath, this.folderName)
+            const content = fs.readFileSync(fullPath, 'utf8')
+            const file = await StagedFile.query(trx).insert({
+                name,
+                fullPath,
+                relativePath,
+                content,
+                repositoryId: this.id
+            });
+            if (!filesToIgnore.includes(file.name) && !filesToIgnore.includes(file.relativePath)) {
+                await trx.commit();
+            } else {
+                await trx.rollback();
+            }
+        } catch (err) {
+            throw err;
         }
     }
 
     async commit(files) {
         try {
-            //uncomment the line below to create github commit
-            // const commitTree = await commits.createTree(repo.name, repo.owner.login, files)
-            // const commit = await commits.createCommit(repo.name, repo.owner.login, commitTree, 'main')
-            const commitedPaths = files.map(({path}) => path)
-            this.stagedFiles = this.stagedFiles(file => !commitedPaths.includes(file))
-            //todo
-            dataProvider.update(repo)
+            const commitTree = await commits.createTree(this.name, this.owner.login, files)
+            await commits.createCommit(this.name, this.owner.login, commitTree, 'main')
+            await this.unstageFiles(files)
+
         } catch (e) {
             console.log(e)
         }
