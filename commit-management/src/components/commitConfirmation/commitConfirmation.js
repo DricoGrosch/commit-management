@@ -29,7 +29,6 @@ class CommitConfirmation extends HTMLElement {
     }
 
     attributeChangedCallback(name) {
-        debugger
         name === 'stagedfiles' ? this.updateStagedFiles() : this.updateUnstagedFiles()
     }
 

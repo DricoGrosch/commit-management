@@ -13,7 +13,6 @@ class ConfigModal extends HTMLElement {
     }
 
     getFolder(files) {
-        debugger
         const folderName = files[0].webkitRelativePath.split('/')[0]
         let path = files[0].path.replace(/\\/g, '/').split('/')
         path = path.slice(0, path.indexOf(folderName) + 1).join('/')
@@ -59,7 +58,6 @@ class ConfigModal extends HTMLElement {
             ipcRenderer.send('save-config', JSON.stringify(this.config))
         })
         ipcRenderer.on('selected-dir', (e, data) => {
-            debugger
             $('#repo-folder').attr('placeholder', data)
             this.config.repositoriesFolder = data
         })

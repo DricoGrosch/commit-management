@@ -39,7 +39,7 @@ class Repository extends Model {
                 full_name: {type: 'string'},
                 relationMappings: {type: 'method'},
                 create: {type: 'method'},
-                getGitIgnoreFiles: {type: 'method'},
+                getGitIgnorePaths: {type: 'method'},
                 atachWatcher: {type: 'method'},
                 loadAll: {type: 'method'},
                 handleLink: {type: 'method'},
@@ -53,8 +53,14 @@ class Repository extends Model {
 
     async getStagedFiles() {
         let stagedFiles = await StagedFile.query()
+        const filesToDelete = stagedFiles.filter(async (file) => await file.isOnGitIgnore())
+
         stagedFiles = stagedFiles.map(file => {
             return {...file, content: encodeURIComponent(file.content)}
+        })
+        await this.unstageFiles(filesToDelete)
+        stagedFiles = stagedFiles.filter(stagedFile => {
+            return filesToDelete.find(({id}) => stagedFile.id != id)
         })
         return stagedFiles
     }
@@ -145,7 +151,7 @@ class Repository extends Model {
         return repo
     }
 
-    async getGitIgnoreFiles() {
+    async getGitIgnorePaths() {
         const content = fs.readFileSync(`${this.path}/.gitignore`, {encoding: 'utf-8'})
         return content.split('\r\n')
     }
@@ -173,24 +179,17 @@ class Repository extends Model {
 
     async handleLink(fullPath) {
         fullPath = await transformPath(fullPath)
-        const filesToIgnore = await this.getGitIgnoreFiles()
-        const trx = await StagedFile.startTransaction();
         try {
             const name = fullPath.split('/').pop()
             let relativePath = await getRelativePath(fullPath, this.folderName)
             const content = fs.readFileSync(fullPath, 'utf8')
-            const file = await StagedFile.query(trx).insert({
+            await StagedFile.query().insert({
                 name,
                 fullPath,
                 relativePath,
                 content,
                 repositoryId: this.id
             });
-            if (!filesToIgnore.includes(file.name) && !filesToIgnore.includes(file.relativePath)) {
-                await trx.commit();
-            } else {
-                await trx.rollback();
-            }
         } catch (err) {
             throw err;
         }
@@ -213,7 +212,7 @@ class Repository extends Model {
 
     async commit(files) {
         try {
-            const commitTree = await commits.createTree(this.name, this.owner.login, files,'main')
+            const commitTree = await commits.createTree(this.name, this.owner.login, files, 'main')
             await commits.createCommit(this.name, this.owner.login, commitTree, 'main')
             await this.unstageFiles(files)
         } catch (e) {

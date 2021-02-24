@@ -18,6 +18,7 @@ class StagedFile extends Model {
                 fullPath: {type: 'string'},
                 relativePath: {type: 'string'},
                 content: {type: 'text'},
+                isOnGitIgnore: {type: 'method'},
             }
         }
     }
@@ -36,6 +37,10 @@ class StagedFile extends Model {
         }
     }
 
+    async isOnGitIgnore(gitIgnorePaths) {
+        const relativePathWithoutName = `${this.relativePath.split('/').slice(0, this.relativePath.split('/').length - 1).join('/')}/`
+        return gitIgnorePaths.includes(this.name) || gitIgnorePaths.includes(this.relativePath) || gitIgnorePaths.includes(relativePathWithoutName)
+    }
 }
 
 module.exports = StagedFile

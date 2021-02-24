@@ -7,7 +7,6 @@ class RepositoryList extends HTMLElement {
     loadResources() {
         // ipcRenderer.send('get-user-repo')
         // ipcRenderer.on('get-user-repo-reply', async (e, data) => {
-        //     debugger
         // })
         return []
     }
