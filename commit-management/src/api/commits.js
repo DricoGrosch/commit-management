@@ -1,20 +1,23 @@
 const {createReference, updateReference, listReferences} = require('./references')
 const moment = require('moment')
-const octokit = global.octokit
 
 
-async function createTree(repoName, owner, files) {
+async function createTree(repoName, owner, files, branchName) {
+    const references = await listReferences(repoName, owner, branchName)
+    let reference = references.find(({ref}) => ref === `refs/heads/${branchName}`)
+    const lastCommit = await getCommit(owner,repoName,reference.object.sha)
     const commitTree = files.map(file => {
         return {
             path: file.relativePath,
             type: 'blob',
             mode: '100644',
-            content: file.content.toString('base64')
+            content: decodeURIComponent(file.content).toString('base64')
         }
     })
-    let response = await octokit.request('POST /repos/{owner}/{repo}/git/trees', {
+    let response = await global.octokit.request('POST /repos/{owner}/{repo}/git/trees', {
         owner,
         repo: repoName,
+        base_tree:lastCommit.tree.sha,
         tree: commitTree
     })
     console.log('commit tree created successfully')
@@ -22,14 +25,14 @@ async function createTree(repoName, owner, files) {
 }
 
 async function createCommit(repoName, owner, tree, branchName) {
-    const response = await octokit.request('POST /repos/{owner}/{repo}/git/commits', {
+    const response = await global.octokit.request('POST /repos/{owner}/{repo}/git/commits', {
         owner,
         repo: repoName,
-        message:`Auto commit ${moment().format('YYYY-MM-DD HH:MM')} by ${owner}`,
+        message: `Auto commit ${moment().format('YYYY-MM-DD HH:MM')} by ${owner}`,
         tree: tree.sha
     })
     const references = await listReferences(repoName, owner, branchName)
-    let reference = references.find(({ref})=>ref===`refs/heads/${branchName}`)
+    let reference = references.find(({ref}) => ref === `refs/heads/${branchName}`)
     if (!reference) {
         await createReference(repoName, owner, branchName, response.data.sha)
     } else {
@@ -38,6 +41,17 @@ async function createCommit(repoName, owner, tree, branchName) {
     console.log('commit created successfully')
 
     return response.data
+}
+
+async function getCommit(owner, repoName, commiSha) {
+    const response = await octokit.request('GET /repos/{owner}/{repo}/git/commits/{commit_sha}', {
+        owner,
+        repo: repoName,
+        commit_sha: commiSha
+
+    })
+    return response.data
+
 }
 
 module.exports = {

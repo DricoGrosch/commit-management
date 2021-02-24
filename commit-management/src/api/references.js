@@ -1,7 +1,6 @@
-const octokit = global.octokit
 
 async function listReferences(repoName, owner, branchName = '') {
-    const response = await octokit.request('GET /repos/{owner}/{repo}/git/matching-refs/{ref}', {
+    const response = await global.octokit.request('GET /repos/{owner}/{repo}/git/matching-refs/{ref}', {
         owner: owner,
         repo: repoName,
         ref: `heads/${branchName}`,
@@ -10,7 +9,7 @@ async function listReferences(repoName, owner, branchName = '') {
 }
 
 async function updateReference(repoName, owner, branchName, newCommitSha) {
-        const response = await octokit.request('PATCH /repos/{owner}/{repo}/git/refs/{ref}', {
+        const response = await global.octokit.request('PATCH /repos/{owner}/{repo}/git/refs/{ref}', {
             owner,
             repo: repoName,
             ref: `heads/${branchName}`,
@@ -21,7 +20,7 @@ async function updateReference(repoName, owner, branchName, newCommitSha) {
 }
 
 async function createReference(repoName, owner, branchName, lastCommitSha) {
-    const response = await octokit.request(`POST /repos/{owner}/{repo}/git/refs`, {
+    const response = await global.octokit.request(`POST /repos/{owner}/{repo}/git/refs`, {
         owner,
         repo: repoName,
         ref: `refs/heads/${branchName}`,

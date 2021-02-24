@@ -52,12 +52,20 @@ class Repository extends Model {
 
 
     async getStagedFiles() {
-        return StagedFile.query();
+        let stagedFiles = await StagedFile.query()
+        stagedFiles = stagedFiles.map(file => {
+            return {...file, content: encodeURIComponent(file.content)}
+        })
+        return stagedFiles
     }
 
     async unstageFiles(files) {
         const idsToRemove = files.map(({id}) => id)
-        StagedFile.query().delete().whereIn('id', idsToRemove)
+        try {
+            await StagedFile.query().delete().whereIn('id', idsToRemove)
+        } catch (e) {
+            console.log(e)
+        }
     }
 
     static get relationMappings() {
@@ -84,26 +92,29 @@ class Repository extends Model {
         repo.folderName = name;
         repo.allowAutoCommit = true
         try {
-            const owner = await Owner.query().insert({
-                id: repo.owner.id,
-                login: repo.owner.login,
-                node_id: repo.owner.node_id,
-                avatar_url: repo.owner.avatar_url,
-                gravatar_id: repo.owner.gravatar_id,
-                url: repo.owner.url,
-                html_url: repo.owner.html_url,
-                followers_url: repo.owner.followers_url,
-                following_url: repo.owner.following_url,
-                gists_url: repo.owner.gists_url,
-                starred_url: repo.owner.starred_url,
-                subscriptions_url: repo.owner.subscriptions_url,
-                organizations_url: repo.owner.organizations_url,
-                repos_url: repo.owner.repos_url,
-                events_url: repo.owner.events_url,
-                received_events: repo.owner.received_events,
-                type: repo.owner.type,
-                site_admin: repo.owner.site_admin,
-            })
+            let owner = await Owner.query().findById(repo.owner.id)
+            if (!owner) {
+                owner = await Owner.query().insert({
+                    id: repo.owner.id,
+                    login: repo.owner.login,
+                    node_id: repo.owner.node_id,
+                    avatar_url: repo.owner.avatar_url,
+                    gravatar_id: repo.owner.gravatar_id,
+                    url: repo.owner.url,
+                    html_url: repo.owner.html_url,
+                    followers_url: repo.owner.followers_url,
+                    following_url: repo.owner.following_url,
+                    gists_url: repo.owner.gists_url,
+                    starred_url: repo.owner.starred_url,
+                    subscriptions_url: repo.owner.subscriptions_url,
+                    organizations_url: repo.owner.organizations_url,
+                    repos_url: repo.owner.repos_url,
+                    events_url: repo.owner.events_url,
+                    received_events: repo.owner.received_events,
+                    type: repo.owner.type,
+                    site_admin: repo.owner.site_admin,
+                })
+            }
 
             repo = await this.query().insert({
                 path: repo.path,
@@ -153,7 +164,7 @@ class Repository extends Model {
     }
 
     static async loadAll() {
-        const repos = await this.query();
+        const repos = await this.query().eager('owner');
         for (const repo of repos) {
             await repo.atachWatcher();
         }
@@ -202,7 +213,7 @@ class Repository extends Model {
 
     async commit(files) {
         try {
-            const commitTree = await commits.createTree(this.name, this.owner.login, files)
+            const commitTree = await commits.createTree(this.name, this.owner.login, files,'main')
             await commits.createCommit(this.name, this.owner.login, commitTree, 'main')
             await this.unstageFiles(files)
         } catch (e) {

@@ -7,14 +7,14 @@ class CommitConfirmation extends HTMLElement {
     // constructor() {
     //     super();
     //     this.commitTimer = null
-        // ipcRenderer.on('window-focus', (e, data) => {
-        //     clearTimeout(this.commitTimer)
-        // })
-        // ipcRenderer.on('window-blur', (e, data) => {
-        //     this.commitTimer = setTimeout(() => {
-        //         this.pushCommit()
-        //     }, 10000)
-        // })
+    // ipcRenderer.on('window-focus', (e, data) => {
+    //     clearTimeout(this.commitTimer)
+    // })
+    // ipcRenderer.on('window-blur', (e, data) => {
+    //     this.commitTimer = setTimeout(() => {
+    //         this.pushCommit()
+    //     }, 10000)
+    // })
     // }
 
     updateUnstagedFiles() {
@@ -24,10 +24,12 @@ class CommitConfirmation extends HTMLElement {
 
     updateStagedFiles() {
         const files = JSON.parse($(this).attr('stagedfiles'))
+        console.log(files)
         $('#staged-files').html(files.reduce((content, file) => content += `<file-confirmation current="stagedfiles" target="unstagedfiles" action="unstage" file=${JSON.stringify(file)}></file-confirmation>`, ''))
     }
 
     attributeChangedCallback(name) {
+        debugger
         name === 'stagedfiles' ? this.updateStagedFiles() : this.updateUnstagedFiles()
     }
 
