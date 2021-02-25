@@ -1,23 +1,30 @@
 const {createReference, updateReference, listReferences} = require('./references')
 const moment = require('moment')
+const StagedFile = require("../database/entities/StagedFile");
 
 
 async function createTree(repoName, owner, files, branchName) {
     const references = await listReferences(repoName, owner, branchName)
     let reference = references.find(({ref}) => ref === `refs/heads/${branchName}`)
-    const lastCommit = await getCommit(owner,repoName,reference.object.sha)
+    const lastCommit = await getCommit(owner, repoName, reference.object.sha)
     const commitTree = files.map(file => {
-        return {
+        const item = {
             path: file.relativePath,
             type: 'blob',
             mode: '100644',
-            content: decodeURIComponent(file.content).toString('base64')
         }
+        if (file.status === StagedFile.REMOVED) {
+            item.sha = null
+        } else {
+            item.content = decodeURIComponent(file.content).toString('base64')
+
+        }
+        return item
     })
     let response = await global.octokit.request('POST /repos/{owner}/{repo}/git/trees', {
         owner,
         repo: repoName,
-        base_tree:lastCommit.tree.sha,
+        base_tree: lastCommit.tree.sha,
         tree: commitTree
     })
     console.log('commit tree created successfully')

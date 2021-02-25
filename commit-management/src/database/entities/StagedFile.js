@@ -1,12 +1,20 @@
+const fs = require("fs");
+const {transformPath} = require("../../services/folderManager");
+const {getRelativePath} = require("../../services/folderManager");
 const {Model} = require("objection");
 
 class StagedFile extends Model {
+    static CREATED = 1
+    static UPDATED = 2
+    static REMOVED = 3
+
     static get tableName() {
         return 'stagedFile'
     }
 
     constructor() {
         super();
+
     }
 
     static get jsonSchema() {
@@ -18,6 +26,7 @@ class StagedFile extends Model {
                 fullPath: {type: 'string'},
                 relativePath: {type: 'string'},
                 content: {type: 'text'},
+                status: {type: 'integer'},
                 isOnGitIgnore: {type: 'method'},
             }
         }
@@ -39,7 +48,22 @@ class StagedFile extends Model {
 
     async isOnGitIgnore(gitIgnorePaths) {
         const relativePathWithoutName = `${this.relativePath.split('/').slice(0, this.relativePath.split('/').length - 1).join('/')}/`
-        return gitIgnorePaths.includes(this.name) || gitIgnorePaths.includes(this.relativePath) || gitIgnorePaths.includes(relativePathWithoutName)
+        return gitIgnorePaths.includes(this.name) || gitIgnorePaths.indexOf(this.relativePath) || gitIgnorePaths.indexOf(relativePathWithoutName);
+    }
+
+    static async create(fullPath, status, repository) {
+        fullPath = await transformPath(fullPath)
+        const name = fullPath.split('/').pop()
+        let relativePath = await getRelativePath(fullPath, repository.folderName)
+        const content = status !== this.REMOVED ? fs.readFileSync(fullPath, 'utf8') : ''
+        return this.query().insert({
+            name,
+            fullPath,
+            relativePath,
+            content,
+            status,
+            repositoryId: repository.id
+        });
     }
 }
 

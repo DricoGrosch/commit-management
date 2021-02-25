@@ -52,15 +52,22 @@ class Repository extends Model {
 
 
     async getStagedFiles() {
+        const gitIgnoreContent = fs.readFileSync(`${this.path}/.gitignore`, {encoding: 'utf-8'})
         let stagedFiles = await StagedFile.query()
-        const filesToDelete = stagedFiles.filter(async (file) => await file.isOnGitIgnore())
+        const filesToDelete = await stagedFiles.filter(file => {
+            file.isOnGitIgnore(gitIgnoreContent.split('\r\n')).then((isOnGitIgnore) => {
+                return isOnGitIgnore
+            }, (err) => {
+                console.log(err)
+            })
+        })
 
         stagedFiles = stagedFiles.map(file => {
             return {...file, content: encodeURIComponent(file.content)}
         })
         await this.unstageFiles(filesToDelete)
         stagedFiles = stagedFiles.filter(stagedFile => {
-            return filesToDelete.find(({id}) => stagedFile.id != id)
+            return !filesToDelete.includes(stagedFile)
         })
         return stagedFiles
     }
@@ -178,36 +185,38 @@ class Repository extends Model {
     }
 
     async handleLink(fullPath) {
-        fullPath = await transformPath(fullPath)
         try {
-            const name = fullPath.split('/').pop()
-            let relativePath = await getRelativePath(fullPath, this.folderName)
-            const content = fs.readFileSync(fullPath, 'utf8')
-            await StagedFile.query().insert({
-                name,
-                fullPath,
-                relativePath,
-                content,
-                repositoryId: this.id
-            });
+            await StagedFile.create(fullPath, StagedFile.CREATED, this)
         } catch (err) {
             throw err;
         }
     }
 
     async handleUnlink(fullPath) {
-        fullPath = await transformPath(fullPath)
         try {
-            await StagedFile.query().delete().where('fullPath', fullPath)
+            const file = await StagedFile.query().where('fullPath', fullPath).first()
+            if (!file) {
+                await StagedFile.create(fullPath, StagedFile.REMOVED, this)
+            } else {
+                await file.patch({status: StagedFile.REMOVED})
+            }
         } catch (e) {
             console.log(e)
         }
     }
 
     async handleChange(fullPath) {
-        fullPath = await transformPath(fullPath)
-        const content = fs.readFileSync(fullPath, 'utf8')
-        await StagedFile.query().where('fullPath', fullPath).first().patch({content})
+        try {
+            const file = await StagedFile.query().where('fullPath', fullPath).first()
+            if (!file) {
+                await StagedFile.create(fullPath, StagedFile.UPDATED, this)
+            } else {
+                const content = fs.readFileSync(fullPath, 'utf8')
+                await file.patch({content, status: StagedFile.UPDATED})
+            }
+        } catch (e) {
+            console.log(e)
+        }
     }
 
     async commit(files) {

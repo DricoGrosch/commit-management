@@ -5,6 +5,7 @@ exports.up = async function (knex) {
         table.string('fullPath').notNullable()
         table.string('relativePath').notNullable()
         table.text('content').nullable()
+        table.integer('status').defaultTo(1)
         table.bigInteger('repositoryId').references('id').inTable('repository').notNullable()
     })
 
