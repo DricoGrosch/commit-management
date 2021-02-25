@@ -166,18 +166,18 @@ class Repository extends Model {
     async atachWatcher(created = false) {
         const watcher = chokidar.watch(this.path, {ignoreInitial: !created})
         watcher.on('add', async (path) => {
-            await this.handleLink(path)
+            await this.handleLink(await transformPath(path))
         })
         watcher.on('unlink', async (path) => {
-            this.handleUnlink(path)
+            await this.handleUnlink(await transformPath(path))
         })
         watcher.on('change', async (path) => {
-            this.handleChange(path)
+            await this.handleChange(await transformPath(path))
         })
     }
 
     static async loadAll() {
-        const repos = await this.query().eager('owner');
+        const repos = await this.query().withGraphFetched('owner');
         for (const repo of repos) {
             await repo.atachWatcher();
         }
@@ -198,7 +198,11 @@ class Repository extends Model {
             if (!file) {
                 await StagedFile.create(fullPath, StagedFile.REMOVED, this)
             } else {
-                await file.patch({status: StagedFile.REMOVED})
+                if (file.status === StagedFile.CREATED) {
+                    await StagedFile.query().deleteById(file.id)
+                } else {
+                    await file.$query().patch({status: StagedFile.REMOVED})
+                }
             }
         } catch (e) {
             console.log(e)
@@ -212,7 +216,7 @@ class Repository extends Model {
                 await StagedFile.create(fullPath, StagedFile.UPDATED, this)
             } else {
                 const content = fs.readFileSync(fullPath, 'utf8')
-                await file.patch({content, status: StagedFile.UPDATED})
+                await file.$query().patch({content, status: StagedFile.UPDATED})
             }
         } catch (e) {
             console.log(e)

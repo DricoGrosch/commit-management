@@ -6,7 +6,7 @@ const Repository = require('../database/entities/Repository')
 const path = require("path");
 Config.getUserConfig().then(({commitInterval}) => {
     cron.schedule(`*/${commitInterval} * * * *`, async () => {
-        const repos = await Repository.query()
+        const repos = await Repository.query().withGraphFetched('owner')
         for (const repo of repos) {
             if (!repo.allowAutoCommit) {
                 continue;
