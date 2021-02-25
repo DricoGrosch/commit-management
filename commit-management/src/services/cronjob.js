@@ -1,37 +1,45 @@
 const cron = require('node-cron');
 const {buildContext, atachCloseEvent} = require("./eventDispatcher");
-const {BrowserWindow, app} = require('electron')
+const {BrowserWindow, app, Notification, Tray} = require('electron')
 const Config = require('../database/entities/Config')
 const Repository = require('../database/entities/Repository')
+const path = require("path");
 Config.getUserConfig().then(({commitInterval}) => {
     cron.schedule(`*/${commitInterval} * * * *`, async () => {
         const repos = await Repository.query()
-        repos.map(async (repo) => {
+        for (const repo of repos) {
             if (!repo.allowAutoCommit) {
-                return
+                continue;
             }
-            const window = new BrowserWindow({
-                width: 500,
-                height: 200,
-                title: repo.name,
-                webPreferences: {
-                    nodeIntegration: true
-                }
-            })
-            window.loadFile('src/components/windows/commitConfirmation.html')
-            window.setMenu(null)
-            window.webContents.openDevTools()
-            buildContext(window, {repoId: repo.id, stagedFiles: await repo.getStagedFiles()})
+            const repoStagedFiles = await repo.getStagedFiles()
+            if (repoStagedFiles.length === 0) {
+                continue
+            }
 
-            // window.on('focus', (event) => {
-            //     console.log('focus')
-            //     event.sender.webContents.send('window-focus')
-            // })
-            // window.on('blur', (event) => {
-            //     console.log('blur')
-            //     event.sender.webContents.send('window-blur')
-            // })
-        });
+
+            const notification = new Notification({
+                title: 'Commit alert',
+                body: `${repoStagedFiles.length} files from repo ${repo.name.toUpperCase()} will be commited in 10 seconds. Click here to manage the staged files`,
+                timeoutType: 10,
+                icon: path.join(__dirname, '../../', 'static', 'images', 'git_icon.png')
+            })
+
+            notification.on('click', () => {
+                const commitWindow = new BrowserWindow({
+                    width: 700,
+                    height: 400,
+                    title: repo.name,
+                    webPreferences: {
+                        nodeIntegration: true
+                    }
+                })
+                commitWindow.loadFile('src/components/windows/commitConfirmation.html')
+                commitWindow.setMenu(null)
+                buildContext(commitWindow, {repoId: repo.id, stagedFiles: repoStagedFiles})
+            })
+
+            notification.show()
+        }
 
     });
 }, (e) => {

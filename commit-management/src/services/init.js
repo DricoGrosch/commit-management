@@ -7,7 +7,7 @@ const {createOctokit} = require("./octokit");
 
 async function init(access_token) {
     const windows = BrowserWindow.getAllWindows()
-    window = windows.find(win => win.isVisible()) || new BrowserWindow({
+    const window = windows.find(win => win.isVisible()) || new BrowserWindow({
         width: 500,
         height: 500,
         webPreferences: {
