@@ -10,6 +10,8 @@ async function init(access_token) {
     const window = windows.find(win => win.isVisible()) || new BrowserWindow({
         width: 500,
         height: 500,
+        show: false,
+
         webPreferences: {
             nodeIntegration: true
         }
@@ -24,12 +26,16 @@ async function init(access_token) {
         } else {
             await Config.query().patch({accessToken: access_token})
         }
-        window.loadFile('src/components/windows/index.html')
+        window.webContents.openDevTools()
         const repos = await Repository.loadAll()
         buildContext(window, {
             repositories: repos,
             config: config
         })
+        window.loadFile('src/components/windows/index.html')
+        window.once("ready-to-show", () => {
+            window.show();
+        });
         global.octokit = await createOctokit(access_token)
     } else {
         window.loadURL(`https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&scope=repo`)
