@@ -4,18 +4,10 @@ class RepositoryList extends HTMLElement {
         super();
     }
 
-    loadResources() {
-        // ipcRenderer.send('get-user-repo')
-        // ipcRenderer.on('get-user-repo-reply', async (e, data) => {
-        // })
-        return []
-    }
-
     connectedCallback() {
-        const resources = this.loadResources()
         this.innerHTML = `
-         <div>
-             ${resources.reduce((content, repo) => content += `<div>${repo.name}</div>`, '')}
+         <div style="display: flex;justify-content: center;flex-wrap: wrap;width: 100%">
+             ${CONTEXT.repositories.reduce((content, repo) => content += `<repository-list-item style="width: 100%" repository=${JSON.stringify(repo)}></repository-list-item>`, '')}
          </div>`;
     }
 }

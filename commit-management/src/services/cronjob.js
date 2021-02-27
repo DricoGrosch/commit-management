@@ -7,11 +7,8 @@ const path = require("path");
 const {showNotification} = require("./notifications");
 Config.getUserConfig().then(({commitInterval}) => {
     cron.schedule(`*/${commitInterval} * * * *`, async () => {
-        const repos = await Repository.query().withGraphFetched('owner')
+        const repos = await Repository.query().withGraphFetched('owner').where('allowAutoCommit',true)
         for (const repo of repos) {
-            if (!repo.allowAutoCommit) {
-                continue;
-            }
             const repoStagedFiles = await repo.getStagedFiles()
             if (repoStagedFiles.length === 0) {
                 continue

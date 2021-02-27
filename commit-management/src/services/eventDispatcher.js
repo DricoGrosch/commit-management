@@ -38,9 +38,18 @@ ipcMain.on('select-dir', async (event, arg) => {
     })
     event.reply('selected-dir', result.filePaths[0])
 })
-ipcMain.on('get-staged-files', () => {
-    window.webContents.send('build-context-reply', JSON.stringify(data))
-    window.removeAllListeners()
+ipcMain.on('change-auto-commit', async (event, data) => {
+    const {id} = JSON.parse(data)
+    const repo = await Repository.query().findById(id)
+    let success = false
+    try {
+        //sqlite trata boolean como numero mesmo
+        await repo.$query().patch({allowAutoCommit: !repo.allowAutoCommit})
+        success = true
+    } catch (err) {
+        console.log(err)
+    }
+    event.reply('reply-change-auto-commit', {success})
 })
 module.exports = {
     buildContext,
