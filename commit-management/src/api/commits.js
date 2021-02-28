@@ -1,6 +1,7 @@
 const {createReference, updateReference, listReferences} = require('./references')
 const moment = require('moment')
 const StagedFile = require("../database/entities/StagedFile");
+const fs = require("fs");
 
 
 async function createTree(repoName, owner, files, branchName) {
@@ -16,8 +17,7 @@ async function createTree(repoName, owner, files, branchName) {
         if (file.status === StagedFile.REMOVED) {
             item.sha = null
         } else {
-            item.content = decodeURIComponent(file.content).toString('base64')
-
+            item.content = fs.readFileSync(file.fullPath, 'utf8')
         }
         return item
     })

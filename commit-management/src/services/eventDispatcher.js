@@ -43,7 +43,6 @@ ipcMain.on('change-auto-commit', async (event, data) => {
     const repo = await Repository.query().findById(id)
     let success = false
     try {
-        //sqlite trata boolean como numero mesmo
         await repo.$query().patch({allowAutoCommit: !repo.allowAutoCommit})
         success = true
     } catch (err) {

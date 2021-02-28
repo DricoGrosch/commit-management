@@ -6,8 +6,11 @@ const Repository = require('../database/entities/Repository')
 const path = require("path");
 const {showNotification} = require("./notifications");
 Config.getUserConfig().then(({commitInterval}) => {
+    if (!commitInterval) {
+        return
+    }
     cron.schedule(`*/${commitInterval} * * * *`, async () => {
-        const repos = await Repository.query().withGraphFetched('owner').where('allowAutoCommit',true)
+        const repos = await Repository.query().withGraphFetched('owner').where('allowAutoCommit', true)
         for (const repo of repos) {
             const repoStagedFiles = await repo.getStagedFiles()
             if (repoStagedFiles.length === 0) {
@@ -30,6 +33,8 @@ Config.getUserConfig().then(({commitInterval}) => {
                     }
                 })
                 commitWindow.setMenu(null)
+                commitWindow.webContents.openDevTools()
+
                 commitWindow.loadFile('src/components/windows/commitConfirmation.html')
                 buildContext(commitWindow, {repoId: repo.id, stagedFiles: repoStagedFiles})
                 commitWindow.once("ready-to-show", () => {

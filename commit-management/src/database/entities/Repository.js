@@ -53,7 +53,13 @@ class Repository extends Model {
 
     async getStagedFiles() {
         const gitIgnoreContent = fs.readFileSync(`${this.path}/.gitignore`, {encoding: 'utf-8'})
-        let stagedFiles = await StagedFile.query()
+        let stagedFiles = await StagedFile.query().select(
+            'id',
+            'name',
+            'fullPath',
+            'relativePath',
+            'status',
+        )
         const filesToDelete = []
 
         for (const file of stagedFiles) {
@@ -62,11 +68,8 @@ class Repository extends Model {
             }
         }
 
-        stagedFiles = stagedFiles.map(file => {
-            return {...file, content: encodeURIComponent(file.content)}
-        })
         stagedFiles = stagedFiles.filter(stagedFile => {
-            return !filesToDelete.find(({id})=>id===stagedFile.id)
+            return !filesToDelete.find(({id}) => id === stagedFile.id)
         })
         await this.unstageFiles(filesToDelete)
         return stagedFiles

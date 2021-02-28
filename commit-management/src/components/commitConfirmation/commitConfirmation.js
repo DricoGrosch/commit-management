@@ -19,13 +19,13 @@ class CommitConfirmation extends HTMLElement {
 
     updateUnstagedFiles() {
         const files = JSON.parse($(this).attr('unstagedfiles'))
-        $('#unstaged-files').html(files.reduce((content, file) => content += `<file-confirmation current="unstagedfiles" target="stagedfiles" action="stage" file=${JSON.stringify(file)}></file-confirmation>`, ''))
+        $('#unstaged-files').html(files.reduce((content, file) => content += `<file-confirmation current="unstagedfiles" target="stagedfiles" action="stage" file='${JSON.stringify(file)}'></file-confirmation>`, ''))
     }
 
     updateStagedFiles() {
         const files = JSON.parse($(this).attr('stagedfiles'))
         console.log(files)
-        $('#staged-files').html(files.reduce((content, file) => content += `<file-confirmation current="stagedfiles" target="unstagedfiles" action="unstage" file=${JSON.stringify(file)}></file-confirmation>`, ''))
+        $('#staged-files').html(files.reduce((content, file) => content += `<file-confirmation current="stagedfiles" target="unstagedfiles" action="unstage" file='${JSON.stringify(file)}'></file-confirmation>`, ''))
     }
 
     attributeChangedCallback(name) {
