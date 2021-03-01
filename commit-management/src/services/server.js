@@ -11,7 +11,8 @@ server.get('/callback', async (req, resp) => {
         client_secret: CLIENT_SECRET,
         code
     })
-    const access_token = response.data.split('&')[0].split('=')[1]
+    const kwarg = response.data.split('&')[0].split('=')
+    const  access_token = kwarg[0] =='error'? null  :kwarg[1]
     init(access_token)
 })
 

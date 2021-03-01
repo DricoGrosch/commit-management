@@ -6,6 +6,7 @@ const Repository = require("../database/entities/Repository");
 const {createOctokit} = require("./octokit");
 
 async function init(access_token) {
+
     const windows = BrowserWindow.getAllWindows()
     const window = windows.find(win => win.isVisible()) || new BrowserWindow({
         width: 500,
@@ -33,13 +34,14 @@ async function init(access_token) {
             config: config
         })
         window.loadFile('src/components/windows/index.html')
-        window.once("ready-to-show", () => {
-            window.show();
-        });
+
         global.octokit = await createOctokit(access_token)
     } else {
         window.loadURL(`https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&scope=repo`)
     }
+     window.once("ready-to-show", () => {
+            window.show();
+        });
     window.setMenu(null)
 
 
