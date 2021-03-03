@@ -55,12 +55,10 @@ class StagedFile extends Model {
         fullPath = await transformPath(fullPath)
         const name = fullPath.split('/').pop()
         let relativePath = await getRelativePath(fullPath, repository.folderName)
-        const content = status !== this.REMOVED ? fs.readFileSync(fullPath, 'utf8') : ''
         return this.query().insert({
             name,
             fullPath,
             relativePath,
-            content,
             status,
             repositoryId: repository.id
         });
