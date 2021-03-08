@@ -12,7 +12,7 @@ async function clone(cloneUrl, folderName) {
             fetchOpts: {
                 callbacks: {
                     credentials: function () {
-                        return Git.Cred.userpassPlaintextNew(config.accessToken, "x-oauth-basic");
+                        return Git.Cred.userpassPlaintextNew(currentUser.login, config.accessToken);
                     },
                     certificateCheck: function () {
                         return 1;
@@ -55,7 +55,7 @@ async function commit(repo, files) {
     } finally {
         try {
             console.log(remote.url())
-            await remote.upload([branchReference], {
+            await remote.push([branchReference], {
                 callbacks: {
                     credentials: function () {
                         return Git.Cred.userpassPlaintextNew(currentUser.login, config.accessToken);
