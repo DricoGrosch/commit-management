@@ -38,6 +38,11 @@ class RepoCreationModal extends HTMLElement {
         })
         $('#create-repo').on('click', () => {
             ipcRenderer.send('create-new-repo', $('#repo-name').val())
+            $('#dismiss-repo-creation-modal').trigger('click')
+        })
+        ipcRenderer.on('create-new-repo-reply', async (event, data) => {
+            const {repo} = JSON.parse(data)
+            $('#repo-list').append(`<repository-list-item style="width: 100%" repository=${JSON.stringify(repo)}></repository-list-item>`)
         })
     }
 }
