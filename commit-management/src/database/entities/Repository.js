@@ -218,8 +218,8 @@ class Repository extends Model {
             if (!file) {
                 await StagedFile.create(fullPath, StagedFile.UPDATED, this)
             } else {
-                const content = fs.readFileSync(fullPath, 'utf8')
-                await file.$query().patch({content, status: StagedFile.UPDATED})
+                // const content = fs.readFileSync(fullPath, 'utf8')
+                await file.$query().patch({status: StagedFile.UPDATED})
             }
         } catch (e) {
             console.log(e)

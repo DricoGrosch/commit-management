@@ -13,8 +13,10 @@ ipcMain.on(`unload-window`, (event, windowId) => {
     BrowserWindow.fromId(windowId).close()
 })
 
-ipcMain.on('create-new-repo', (event, name) => {
-    Repository.create(name)
+ipcMain.on('create-new-repo', async (event, name) => {
+    const repo = await Repository.create(name)
+    debugger
+    event.reply('create-new-repo-reply', JSON.stringify({repo}))
 })
 ipcMain.on('get-user-repo', (event, name) => {
     event.reply('get-user-repo-reply')
@@ -48,7 +50,7 @@ ipcMain.on('change-auto-commit', async (event, data) => {
     } catch (err) {
         console.log(err)
     }
-    event.reply('reply-change-auto-commit', {success})
+    event.reply('reply-change-auto-commit', {success,id})
 })
 module.exports = {
     buildContext,
