@@ -48,6 +48,3 @@ class RepoCreationModal extends HTMLElement {
 }
 
 customElements.define('repo-creation-modal', RepoCreationModal);
-
-// $('#new-repo').click(() => {
-// })

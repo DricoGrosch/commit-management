@@ -50,7 +50,7 @@ ipcMain.on('change-auto-commit', async (event, data) => {
     } catch (err) {
         console.log(err)
     }
-    event.reply('reply-change-auto-commit', {success})
+    event.reply('reply-change-auto-commit', {success,id})
 })
 module.exports = {
     buildContext,

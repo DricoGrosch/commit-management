@@ -27,7 +27,7 @@ async function init(access_token) {
         } else {
             await Config.query().patch({accessToken: access_token})
         }
-        // window.webContents.openDevTools()
+        window.webContents.openDevTools()
         const repos = await Repository.loadAll()
         buildContext(window, {
             repositories: repos,
