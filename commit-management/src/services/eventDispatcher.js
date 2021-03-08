@@ -1,6 +1,7 @@
 const {app, ipcMain, BrowserWindow, dialog} = require('electron')
 const Config = require('../database/entities/Config')
 const Repository = require("../database/entities/Repository");
+const {create} = require("../models/Repository");
 
 async function buildContext(window, data) {
     data.windowId = window.id
@@ -14,8 +15,7 @@ ipcMain.on(`unload-window`, (event, windowId) => {
 })
 
 ipcMain.on('create-new-repo', async (event, name) => {
-    const repo = await Repository.create(name)
-    debugger
+    const repo = await create(name)
     event.reply('create-new-repo-reply', JSON.stringify({repo}))
 })
 ipcMain.on('get-user-repo', (event, name) => {
