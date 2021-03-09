@@ -22,54 +22,54 @@ Config.getUserConfig().then((data) => {
                 const repo = await git.Repository.open(repoFolder);
                 repo.setWorkdir(repoFolder, 0);
                 const files = await repo.getStatus();
-                // await commit(repo, files)
-
-                // , {
-                // callbacks: {
-                //     credentials: function(url, userName) {
-                //         console.log("Requesting creds");
-                //         return NodeGit.Cred.sshKeyFromAgent(userName);
-                //     }
-                // }
-
-                //         // changes and head are each oids. Read about them here:
-                //         // https://hackage.haskell.org/package/gitlib-0.6.5/docs/Data-Git-Oid.html
+                await commit(repo, files)
                 //
+                //     // , {
+                //     // callbacks: {
+                //     //     credentials: function(url, userName) {
+                //     //         console.log("Requesting creds");
+                //     //         return NodeGit.Cred.sshKeyFromAgent(userName);
+                //     //     }
+                //     // }
                 //
-                //         // const repoStagedFiles = await repo.getStagedFiles()
-                //         // if (repoStagedFiles.length === 0) {
-                //         //     continue
-                //         // }
-                //         // const notification = await showNotification({
-                //         //     title: 'Commit alert',
-                //         //     body: `${repoStagedFiles.length} files from repo ${repo.name.toUpperCase()} will be commited in 10 seconds. Click here to manage the staged files`,
-                //         //     timeoutType: 10,
-                //         //     icon: path.join(__dirname, '../../', 'static', 'images', 'git_icon.png')
-                //         // }, () => {
-                //         //     clearTimeout(commitTimer)
-                //         //     const commitWindow = new BrowserWindow({
-                //         //         width: 700,
-                //         //         height: 400,
-                //         //         title: repo.name,
-                //         //         show: false,
-                //         //         webPreferences: {
-                //         //             nodeIntegration: true
-                //         //         }
-                //         //     })
-                //         //     commitWindow.setMenu(null)
-                //         //     commitWindow.webContents.openDevTools()
-                //         //
-                //         //     commitWindow.loadFile('src/components/windows/commitConfirmation.html')
-                //         //     buildContext(commitWindow, {repoId: repo.id, stagedFiles: repoStagedFiles})
-                //         //     commitWindow.once("ready-to-show", () => {
-                //         //         commitWindow.show();
-                //         //     });
-                //         // })
-                //         // let commitTimer = null
-                //         // notification.show()
-                //         // commitTimer = setTimeout(async () => {
-                //         //     await repo.commit(repoStagedFiles)
-                //         // }, 10000)
+                //     //         // changes and head are each oids. Read about them here:
+                //     //         // https://hackage.haskell.org/package/gitlib-0.6.5/docs/Data-Git-Oid.html
+                //     //
+                //     //
+                //     //         // const repoStagedFiles = await repo.getStagedFiles()
+                //     //         // if (repoStagedFiles.length === 0) {
+                //     //         //     continue
+                //     //         // }
+                //     //         // const notification = await showNotification({
+                //     //         //     title: 'Commit alert',
+                //     //         //     body: `${repoStagedFiles.length} files from repo ${repo.name.toUpperCase()} will be commited in 10 seconds. Click here to manage the staged files`,
+                //     //         //     timeoutType: 10,
+                //     //         //     icon: path.join(__dirname, '../../', 'static', 'images', 'git_icon.png')
+                //     //         // }, () => {
+                //     //         //     clearTimeout(commitTimer)
+                //     //         //     const commitWindow = new BrowserWindow({
+                //     //         //         width: 700,
+                //     //         //         height: 400,
+                //     //         //         title: repo.name,
+                //     //         //         show: false,
+                //     //         //         webPreferences: {
+                //     //         //             nodeIntegration: true
+                //     //         //         }
+                //     //         //     })
+                //     //         //     commitWindow.setMenu(null)
+                //     //         //     commitWindow.webContents.openDevTools()
+                //     //         //
+                //     //         //     commitWindow.loadFile('src/components/windows/commitConfirmation.html')
+                //     //         //     buildContext(commitWindow, {repoId: repo.id, stagedFiles: repoStagedFiles})
+                //     //         //     commitWindow.once("ready-to-show", () => {
+                //     //         //         commitWindow.show();
+                //     //         //     });
+                //     //         // })
+                //     //         // let commitTimer = null
+                //     //         // notification.show()
+                //     //         // commitTimer = setTimeout(async () => {
+                //     //         //     await repo.commit(repoStagedFiles)
+                //     //         // }, 10000)
             }
             //
         }

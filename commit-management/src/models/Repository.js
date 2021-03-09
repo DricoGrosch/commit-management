@@ -46,7 +46,8 @@ async function commit(repo, files) {
     const committer = Git.Signature.now(currentUser.login, currentUser.email ?? '04175116982@edu.udesc.br');
     const commitId = await repo.createCommit("HEAD", author, committer, `Auto commit ${moment().format('YYYY-MM-DD HH:MM')} by ${committer.name}`, changes, parent ? [parent] : []);
     const currentBranch = await repo.getCurrentBranch()
-    const branchReference = `refs/heads/${currentBranch.name()}:refs/heads/${currentBranch.name()}`
+    const currentBranchname = currentBranch.name()
+    const branchReference = currentBranchname
     let remote;
     try {
         remote = await repo.getRemote("origin")
