@@ -1,4 +1,4 @@
-async function createRepo(name) {
+async function create(name) {
     try {
 
         let response = await global.octokit.request('POST /user/repos', {
@@ -13,5 +13,5 @@ async function createRepo(name) {
 }
 
 module.exports = {
-    createRepo
+    create
 }

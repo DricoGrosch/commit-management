@@ -3,12 +3,14 @@ const Config = require('../database/entities/Config')
 const Git = require('nodegit')
 const path = require('path')
 const fs = require('fs')
+const repositories = require("../api/repositories");
+const commits = require("../api/commits");
 const {getCurrentUser} = require("../api/user");
 
-async function clone(cloneUrl, folderName) {
+async function clone(cloneUrl, name) {
     const config = await Config.getUserConfig()
 
-    Git.Clone(cloneUrl, path.join(config.repositoriesFolder, folderName), {
+    Git.Clone(cloneUrl, path.join(config.repositoriesFolder, name), {
             fetchOpts: {
                 callbacks: {
                     credentials: function () {
@@ -44,39 +46,29 @@ async function commit(repo, files) {
     }
     const author = Git.Signature.now(currentUser.login, currentUser.email ?? '04175116982@edu.udesc.br');
     const committer = Git.Signature.now(currentUser.login, currentUser.email ?? '04175116982@edu.udesc.br');
-    const commitId = await repo.createCommit("HEAD", author, committer, `Auto commit ${moment().format('YYYY-MM-DD HH:MM')} by ${committer.name}`, changes, parent ? [parent] : []);
+    const commitId = await repo.createCommit("HEAD", author, committer, `Auto commit ${moment().format('YYYY-MM-DD HH:MM')} by ${currentUser.login}`, changes, parent ? [parent] : []);
     const currentBranch = await repo.getCurrentBranch()
-    const currentBranchname = currentBranch.name()
-    const branchReference = currentBranchname
+    const branchReference = currentBranch.name()
     let remote;
+    remote = await repo.getRemote("origin")
     try {
-        remote = await repo.getRemote("origin")
+        console.log(remote.url())
+        await remote.push([branchReference], {
+            callbacks: {
+                credentials: function () {
+                    return Git.Cred.userpassPlaintextNew(currentUser.login, config.accessToken);
+                },
+            }
+        })
     } catch (e) {
-        remote = await Git.Remote.create(repo, "origin", `https://github.com/${currentUser.login}/teste_nodegit.git`)
-    } finally {
-        try {
-            console.log(remote.url())
-            await remote.push([branchReference], {
-                callbacks: {
-                    credentials: function () {
-                        return Git.Cred.userpassPlaintextNew(currentUser.login, config.accessToken);
-                    },
-                }
-            })
-        } catch (e) {
-            await Git.Remote.delete(repo, 'origin')
-        }
+        console.log(e)
     }
 }
 
 async function create(name) {
-    const config = await Config.getUserConfig()
-    const repoFolder = path.join(config.repositoriesFolder, name.replace(' ', '_'))
-    const repo = await Git.Repository.init(repoFolder, 0);
-
-    fs.writeFileSync(path.join(repoFolder, '.gitignore'))
-    fs.writeFileSync(path.join(repoFolder, 'README.md'))
-    await commit(repo, await repo.getStatus())
+    name = name.replaceAll(' ', '_')
+    const repo = await repositories.create(name)
+    await clone(repo.clone_url, repo.name)
     return repo
 }
 

@@ -103,7 +103,7 @@ class Repository extends Model {
         const path = `${await transformPath(config.repositoriesFolder)}/${name}`
         let repo = {}
         //uncomment the line below to create github repository
-        repo = await repositories.createRepo(name)
+        repo = await repositories.create(name)
         repo.path = path;
         repo.folderName = name;
         repo.allowAutoCommit = true

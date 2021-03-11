@@ -34,7 +34,6 @@ class CommitConfirmation extends HTMLElement {
 
     pushCommit = () => {
         ipcRenderer.send(`commit`, JSON.stringify({
-            repoId: CONTEXT.repoId,
             windowId: CONTEXT.windowId,
             stagedFiles: JSON.parse($(this).attr('stagedfiles'))
         }))
