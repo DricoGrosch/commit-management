@@ -14,8 +14,8 @@ ipcMain.on(`unload-window`, (event, windowId) => {
 })
 
 ipcMain.on('create-new-repo', async (event, name) => {
+    name = name.replaceAll(' ', '_')
     const repo = await Repository.create(name)
-    debugger
     event.reply('create-new-repo-reply', JSON.stringify({repo}))
 })
 ipcMain.on('get-user-repo', (event, name) => {
