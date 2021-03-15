@@ -52,7 +52,12 @@ class Repository extends Model {
 
 
     async getStagedFiles() {
-        const gitIgnoreContent = fs.readFileSync(`${this.path}/.gitignore`, {encoding: 'utf-8'})
+        let gitIgnoreContent = ''
+        try {
+            gitIgnoreContent = fs.readFileSync(`${this.path}/.gitignore`, {encoding: 'utf-8'})
+        } catch (e) {
+            console.log(e)
+        }
         let stagedFiles = await StagedFile.query().select(
             'id',
             'name',

@@ -48,7 +48,16 @@ class StagedFile extends Model {
 
     async isOnGitIgnore(gitIgnorePaths) {
         const relativePathWithoutName = `${this.relativePath.split('/').slice(0, this.relativePath.split('/').length - 1).join('/')}/`
-        return gitIgnorePaths.includes(this.name) || gitIgnorePaths.includes(this.relativePath) || gitIgnorePaths.includes(relativePathWithoutName);
+        let isIgnored = false
+        gitIgnorePaths.forEach(pathToIgnore=>{
+            pathToIgnore = pathToIgnore.trim()
+            if (pathToIgnore === '') {
+                return
+            }
+             isIgnored = this.name.includes(pathToIgnore) || this.relativePath.includes(pathToIgnore) || relativePathWithoutName.includes(pathToIgnore)
+
+        })
+        return isIgnored
     }
 
     static async create(fullPath, status, repository) {

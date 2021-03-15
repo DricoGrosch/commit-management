@@ -18,7 +18,7 @@ class RepositoryListItem extends HTMLElement {
                 padding: 1%;
                 align-items: center;
                 border: 2px solid #11A7A7;
-                width: 100%;
+                width: 90%%;
                 color: white;
                 font-size: 20px;
                 margin: 1% 5%;

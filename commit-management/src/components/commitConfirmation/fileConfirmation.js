@@ -1,9 +1,8 @@
 class FileConfirmation extends HTMLElement {
 
     getFileIcon(status) {
-        switch (status) {
+        switch (parseInt(status)) {
             case 1: {
-
                 return '<i style="color: red" class="fas fa-trash-alt"></i>'
             }
             case 2: {

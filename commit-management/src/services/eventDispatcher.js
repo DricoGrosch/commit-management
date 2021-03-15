@@ -25,8 +25,8 @@ ipcMain.on('get-user-repo', (event, name) => {
 ipcMain.on('commit', async (event, data) => {
     const {repoId, stagedFiles, windowId} = JSON.parse(data)
     const repo = await Repository.query().findById(repoId).eager('owner')
-    await repo.commit(stagedFiles)
     BrowserWindow.fromId(windowId).close()
+    await repo.commit(stagedFiles)
 })
 ipcMain.on('save-config', async (event, data) => {
     const config = JSON.parse(data)
