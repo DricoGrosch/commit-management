@@ -2,11 +2,10 @@ class FileConfirmation extends HTMLElement {
 
     getFileIcon(status) {
         switch (status) {
-            case 1: {
-
+            case status.isDeleted: {
                 return '<i style="color: red" class="fas fa-trash-alt"></i>'
             }
-            case 2: {
+            case status.isNew: {
                 return '<i  style="color: orange" class="fas fa-pencil-alt"></i>'
             }
             default: {
@@ -25,13 +24,13 @@ class FileConfirmation extends HTMLElement {
         const target = $(this).attr('target')
         $(this).html(`
         <div style="display:flex;width: 100%">
-            <div style="width: 70%;color: white">${this.getFileIcon(file.status)} ${file.relativePath}</div>
+            <div style="width: 70%;color: white">${this.getFileIcon(file.status)} ${file.path}</div>
             <div style="width: 30%"><button class="btn btn-primary actionButton" style="font-size: 12px">${action.toUpperCase()}</button></div>
         </div>
         `)
         $(this).on('click', '.actionButton', () => {
             $('#commit-confirmation').attr(current, (index, currentValue) => {
-                return JSON.stringify(JSON.parse(currentValue).filter(({relativePath}) => relativePath !== file.relativePath))
+                return JSON.stringify(JSON.parse(currentValue).filter(({relativePath}) => relativePath !== file.path))
             })
             $('#commit-confirmation').attr(target, (index, currentValue) => {
                 return JSON.stringify([...JSON.parse(currentValue), file])

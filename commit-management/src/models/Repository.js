@@ -28,6 +28,7 @@ async function clone(cloneUrl, name) {
 }
 
 async function commit(repo, files) {
+    console.log('beginning commit')
     const currentUser = await getCurrentUser()
     const config = await Config.getUserConfig()
     const index = await repo.refreshIndex(); // read latest
@@ -36,17 +37,11 @@ async function commit(repo, files) {
     });
     await index.write();
     const changes = await index.writeTree();
-    let parent = null
-    try {
-
-        const head = await Git.Reference.nameToId(repo, "HEAD");
-        parent = await repo.getCommit(head);
-    } catch (e) {
-
-    }
+    const head = await Git.Reference.nameToId(repo, "HEAD");
+    const parent = await repo.getCommit(head);
     const author = Git.Signature.now(currentUser.login, currentUser.email ?? '04175116982@edu.udesc.br');
     const committer = Git.Signature.now(currentUser.login, currentUser.email ?? '04175116982@edu.udesc.br');
-    const commitId = await repo.createCommit("HEAD", author, committer, `Auto commit ${moment().format('YYYY-MM-DD HH:MM')} by ${currentUser.login}`, changes, parent ? [parent] : []);
+    await repo.createCommit("HEAD", author, committer, `Auto commit ${moment().format('YYYY-MM-DD HH:MM')} by ${currentUser.login}`, changes, [parent]);
     const currentBranch = await repo.getCurrentBranch()
     const branchReference = currentBranch.name()
     let remote;
@@ -60,9 +55,24 @@ async function commit(repo, files) {
                 },
             }
         })
+        console.log('pushed successfully')
     } catch (e) {
         console.log(e)
     }
+}
+
+async function transformFiles(files) {
+    files = files.filter(file => !file.isIgnored() && (file.isModified() || file.isNew() || file.isDeleted())).map(file => {
+        return {
+            path: file.path(),
+            status: {
+                isDeleted: file.isDeleted() !== 0,
+                isNew: file.isNew() !== 0,
+                isModified: file.isModified() !== 0,
+            },
+        }
+    })
+    return files
 }
 
 async function create(name) {
@@ -72,8 +82,17 @@ async function create(name) {
     return repo
 }
 
+async function getName(repo) {
+    let remoteObject = await repo.getRemote('origin');
+    let remoteUrl = await remoteObject.url();
+    let name = remoteUrl.split('/').pop()
+    return name.split('.')[0]
+}
+
 module.exports = {
     clone,
     create,
-    commit
+    commit,
+    getName,
+    transformFiles
 }
