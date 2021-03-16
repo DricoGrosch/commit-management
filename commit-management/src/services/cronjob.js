@@ -19,6 +19,7 @@ Config.getUserConfig().then((data) => {
                 const repoFolder = path.join(data.repositoriesFolder, file)
                 const repo = await git.Repository.open(repoFolder);
                 const repoName = await getName(repo)
+                const index = await repo.refreshIndex()
                 let files = await repo.getStatus()
                 const transformedFiles = await transformFiles(files)
                 if (files.length === 0) {
@@ -52,7 +53,7 @@ Config.getUserConfig().then((data) => {
                 let commitTimer = null
                 notification.show()
                 commitTimer = setTimeout(async () => {
-                    await commit(repo, files)
+                    await commit(repo, files,index)
                 }, 10000)
             }
         }

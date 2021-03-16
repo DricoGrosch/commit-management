@@ -27,11 +27,13 @@ async function clone(cloneUrl, name) {
     })
 }
 
-async function commit(repo, files) {
+async function commit(repo, files,index=null) {
     console.log('beginning commit')
     const currentUser = await getCurrentUser()
     const config = await Config.getUserConfig()
-    const index = await repo.refreshIndex(); // read latest
+    if(!index){
+        index =  await repo.getStatus()
+    }
     files.forEach(file => {
         index.addByPath(file.path())
     });
