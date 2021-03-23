@@ -3,13 +3,13 @@ class FileConfirmation extends HTMLElement {
     getFileIcon(status) {
         switch (parseInt(status)) {
             case 1: {
-                return '<i style="color: red" class="fas fa-trash-alt"></i>'
+                return '<i  style="color: green" class="fas fa-plus"></i>'
             }
             case 2: {
                 return '<i  style="color: orange" class="fas fa-pencil-alt"></i>'
             }
             default: {
-                return '<i  style="color: green" class="fas fa-plus"></i>'
+                return '<i style="color: red" class="fas fa-trash-alt"></i>'
 
             }
         }
