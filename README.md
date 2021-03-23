@@ -43,6 +43,13 @@ cd commit-management
 # Instale as dependências
 yarn install
 
+# Rode o aplicação
+yarn dev
+
+# Acesse http://localhost:3000 no seu navagador.
+```
+
+<br>
 
 
 ## Licença
@@ -53,3 +60,9 @@ yarn install
 <br>
 
 Esse projeto está sob a licença MIT. Veja o arquivo [LICENSE](/LICENSE) para mais detalhes.
+
+---
+
+Feito com :purple_heart: 
+
+
