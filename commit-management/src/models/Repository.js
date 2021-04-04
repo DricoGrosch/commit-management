@@ -27,16 +27,13 @@ async function clone(cloneUrl, name) {
     })
 }
 
-async function commit(repo, files,index=null) {
+async function autoCommit(repo) {
     console.log('beginning commit')
     const currentUser = await getCurrentUser()
     const config = await Config.getUserConfig()
-    if(!index){
-        index =  await repo.getStatus()
-    }
-    files.forEach(file => {
-        index.addByPath(file.path())
-    });
+    const index = await repo.refreshIndex();
+    let files = await repo.getStatus(); // get status of all files
+    files.forEach(file => index.addByPath(file.path())); // stage each file
     await index.write();
     const changes = await index.writeTree();
     const head = await Git.Reference.nameToId(repo, "HEAD");
@@ -57,6 +54,8 @@ async function commit(repo, files,index=null) {
                 },
             }
         })
+        files = await repo.getStatus()
+        console.log()
         console.log('pushed successfully')
     } catch (e) {
         console.log(e)
@@ -94,7 +93,7 @@ async function getName(repo) {
 module.exports = {
     clone,
     create,
-    commit,
+    autoCommit,
     getName,
     transformFiles
 }

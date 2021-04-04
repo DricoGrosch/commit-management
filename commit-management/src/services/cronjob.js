@@ -7,6 +7,7 @@ const path = require("path");
 const fs = require('fs')
 const {showNotification} = require("./notifications");
 const git = require('nodegit')
+const {autoCommit} = require("../models/Repository");
 const {getName, transformFiles, commit} = require("../models/Repository");
 Config.getUserConfig().then((data) => {
 
@@ -27,7 +28,7 @@ Config.getUserConfig().then((data) => {
                 }
                 const notification = await showNotification({
                     title: 'Commit alert',
-                    body: `${files.length} files from repo ${repoName} will be commited in 10 seconds. Click here to manage the staged files`,
+                    body: `Files from repo ${repoName} will be commited in 10 seconds. Click here to manage the staged files`,
                     timeoutType: 10,
                     icon: path.join(__dirname, '../../', 'static', 'images', 'git_icon.png')
                 }, async () => {
@@ -53,7 +54,7 @@ Config.getUserConfig().then((data) => {
                 let commitTimer = null
                 notification.show()
                 commitTimer = setTimeout(async () => {
-                    await commit(repo, files,index)
+                    await autoCommit(repo)
                 }, 10000)
             }
         }
