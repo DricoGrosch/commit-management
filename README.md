@@ -50,12 +50,7 @@ yarn dev
 <br>
 
 
-## Licença
-<a href="https://opensource.org/licenses/MIT">
-    <img alt="License" src="https://img.shields.io/badge/license-MIT-6E40C9?style=flat-square">
-</a>
 
-<br>
 
 Esse projeto está sob a licença MIT. Veja o arquivo [LICENSE](/LICENSE) para mais detalhes.
 
