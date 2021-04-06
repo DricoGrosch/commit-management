@@ -46,8 +46,6 @@ yarn install
 # Rode o aplicação
 yarn dev
 
-# Acesse http://localhost:3000 no seu navagador.
-```
 
 <br>
 
