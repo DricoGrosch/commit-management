@@ -41,7 +41,7 @@ git clone https://github.com/DricoGrosch/commit-management.git
 cd commit-management
 
 # Instale as dependências
-yarn install
+npm install
 
 # Rode o aplicação
 yarn dev
