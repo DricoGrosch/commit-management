@@ -1,11 +1,9 @@
-# Project Title
-
-A nice project with a nice description
+# Commit Management
 
 ---
 ## Requirements
 
-For development, you will only need Node.js and a node global package, Yarn, installed in your environement.
+For development, you will only need Node.js and a node global package, nom, installed in your environement.
 
 ### Node
 - #### Node installation on Windows
