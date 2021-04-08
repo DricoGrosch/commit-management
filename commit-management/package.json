@@ -2,17 +2,30 @@
   "name": "commit-management",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon src/index.js"
+    "start": "electron ."
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.21.0",
+    "@octokit/core": "^3.2.4",
+    "@octokit/request": "^5.4.12",
+    "aws-sdk": "^2.817.0",
+    "axios": "^0.21.1",
     "chokidar": "^3.4.3",
-    "nodemon": "^2.0.6"
-  }
+    "electron": "^11.1.1",
+    "express": "^4.17.1",
+    "jQuery": "^1.7.4",
+    "knex": "^0.21.15",
+    "moment": "^2.29.1",
+    "node-cron": "^2.0.3",
+    "node-watch": "^0.7.1",
+    "nodemon": "^2.0.6",
+    "objection": "^2.2.4",
+    "sqlite3": "^5.0.0"
+  },
+  "devDependencies": {}
 }
